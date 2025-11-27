@@ -73,7 +73,7 @@ const Sorting: React.FC<SortingProps> = ({ title, pageUrl, productsCount }) => {
                 key={index}
                 onClick={() => handleSortClick(link.href)}
                 variant={isActive ? "contained" : "outlined"}
-                color="primary"
+                sx={{color:"#fc9b04",backgroundColor:"white"}}
                 size="small"
               >
                 {link.title}

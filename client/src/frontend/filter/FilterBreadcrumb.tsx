@@ -8,7 +8,7 @@ interface FilterBreadcrumbProps {
 
 const FilterBreadcrumb: React.FC<FilterBreadcrumbProps> = ({ title }) => {
   return (
-    <Box className="d-flex justify-content-between align-items-center mb-3">
+    <Box className="d-flex justify-content-between align-items-center mb-3" >
       <Breadcrumbs
         separator={<ChevronRightIcon fontSize="small" />}
         aria-label="breadcrumb"

@@ -23,15 +23,15 @@ const Checkout: React.FC = () => {
     error,
   } = useGetUserDetailsQuery();
 
-  console.log("user: ", userData);
+  // console.log("user: ", userData);
 
   if (loadingUserData) return <div>Loading…</div>;
   if (isError) return <div>Error: {JSON.stringify(error)}</div>;
 
   return (
-    <Box sx={{ bgcolor: "background.default", minHeight: "100vh", py: 4 }}>
-      <Container maxWidth="md">
-        <Paper elevation={3} sx={{ p: 4 }}>
+    <Box sx={{ bgcolor: "#020817", minHeight: "100vh", py: 4 }}>
+      <Container maxWidth="md" >
+        <Paper elevation={3} sx={{ p: 4,bgcolor: "#1f2937" }}>
           <Steps steps={steps} />
           <Box sx={{ mt: 3 }}>
             <CartBanner />

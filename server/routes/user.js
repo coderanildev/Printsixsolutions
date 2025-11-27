@@ -260,4 +260,75 @@ router.post("/logout", async (req, res) => {
   }
 });
 
+router.put("/update-profile", checkAuth, async (req, res) => {
+  try {
+    const { name, email, phone } = req.body;
+
+    // Find user from token
+    const user = await User.findById(req.user.userId);
+
+    if (!user) {
+      return res.status(404).json({ success: false, msg: "User not found" });
+    }
+
+    // Update fields
+    if (name) user.name = name;
+    if (email) user.email = email;
+    if (phone) user.phone = phone;
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      msg: "Profile updated successfully",
+      user,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, msg: "Server error" });
+  }
+});
+
+// Update a specific address for logged-in user
+router.put("/update-address/:addressId", checkAuth, async (req, res) => {
+  try {
+    const { addressId } = req.params;
+    const updates = req.body;
+
+    const user = await User.findById(req.user.userId);
+    if (!user) {
+      return res.status(404).json({ success: false, msg: "User not found" });
+    }
+
+    const address = user.addresses.id(addressId);
+    if (!address) {
+      return res.status(404).json({ success: false, msg: "Address not found" });
+    }
+
+    // ✅ If this address is set to default billing/shipping, clear others
+    if (updates.isDefaultBillingAddress === true) {
+      user.addresses.forEach((a) => (a.isDefaultBillingAddress = false));
+    }
+    if (updates.isDefaultShippingAddress === true) {
+      user.addresses.forEach((a) => (a.isDefaultShippingAddress = false));
+    }
+
+    // ✅ Update fields
+    Object.assign(address, updates);
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      msg: "Address updated successfully",
+      addresses: user.addresses,
+    });
+  } catch (error) {
+    console.error("Update Address Error:", error);
+    res.status(500).json({ success: false, msg: "Server error" });
+  }
+});
+
+
+
 module.exports = router;

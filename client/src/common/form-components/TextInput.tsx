@@ -1,5 +1,5 @@
 import React from "react";
-import { TextField, FormHelperText, FormControl, InputLabel } from "@mui/material";
+import { TextField, FormControl } from "@mui/material";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 
 interface TextInputProps {
@@ -11,6 +11,7 @@ interface TextInputProps {
   type?: string;
   className?: string;
   defaultValue?: string;
+  width?: string; // optional prop to control width
 }
 
 const TextInput: React.FC<TextInputProps> = ({
@@ -22,11 +23,15 @@ const TextInput: React.FC<TextInputProps> = ({
   type = "text",
   className = "",
   defaultValue = "",
+  width = "50%", // default width is 50%
 }) => {
   const error = !!errors[name];
 
   return (
-    <FormControl fullWidth className={className} margin="normal">
+    <FormControl
+      className={className}
+      sx={{ width, padding: "0px 5px", marginY: 1 }}
+    >
       <TextField
         {...register(name, { required: isRequired })}
         label={isRequired ? `* ${label}` : label}
@@ -34,9 +39,31 @@ const TextInput: React.FC<TextInputProps> = ({
         type={type}
         defaultValue={defaultValue}
         error={error}
-        helperText={error ? `${label} is required` : " "}
+        helperText={error ? `${label} is required` : undefined}
         variant="outlined"
-        fullWidth
+        sx={{
+          "& .MuiInputBase-root": {
+            height: 50, 
+            bgcolor: error ? "#fff5f5" : "#f5f5f5", 
+          },
+          "& .MuiOutlinedInput-input": {
+            padding: "0 8px",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+          },
+          "& .MuiInputLabel-root": {
+            fontSize: "0.9rem",
+            top: "-4px",
+            color: error ? "#fc9b04" : "#fc9b04", 
+          },
+          "& .MuiInputLabel-shrink": {
+            color: error ? "#fc9b04" : "#fc9b04",
+          },
+          display: "flex",
+          flexDirection: "column",
+          gap: 1,
+        }}
       />
     </FormControl>
   );

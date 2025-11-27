@@ -26,7 +26,7 @@ const NotificationsDropdown: React.FC = () => {
     <>
       <IconButton color="inherit" onClick={handleClick}>
         <Badge badgeContent={3} color="error">
-          <NotificationsIcon />
+          <NotificationsIcon sx={{color:"white", fontSize:"32px"}} />
         </Badge>
       </IconButton>
 

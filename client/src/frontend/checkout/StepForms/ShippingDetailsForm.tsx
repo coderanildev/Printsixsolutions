@@ -27,6 +27,7 @@ import { useGetStatesByCountryIdQuery } from "../../../redux/services/states";
 import { RootState } from "../../../redux/Store";
 import { ShippingAddress } from "../../../types/shippingaddress";
 import { useGetUserDetailsQuery } from "../../../redux/services/users";
+import { Address } from "../../../types/address";
 
 export default function ShippingDetailsForm() {
   const {
@@ -37,11 +38,12 @@ export default function ShippingDetailsForm() {
     refetch,
   } = useGetUserDetailsQuery();
 
-  console.log("user: ", userData?.user);
-
   const addresses = userData?.user?.addresses;
 
-  console.log("addresses", addresses);
+  const [isAddingNewAddress, setIsAddingNewAddress] = useState(false);
+  const [selectedAddress, setSelectedAddress] = useState<Partial<ShippingAddress>>({});
+
+  const [shippingCostError, setShippingCostError] = useState(false);
 
   const [countryId, setCountryId] = useState("");
   const { data: countries = [] } = useGetAllCountriesQuery();
@@ -54,27 +56,34 @@ export default function ShippingDetailsForm() {
   const existingFormData = useSelector(
     (state: RootState) => state.checkout.checkoutFormData
   );
-  console.log("existingFormData:", existingFormData);
 
-  const [isAddingNewAddress, setIsAddingNewAddress] = useState(false);
-  const [selectedAddress, setSelectedAddress] = useState<
-    Partial<ShippingAddress>
-  >({});
   const [shippingCost, setShippingCost] = useState(
     existingFormData?.shippingCost || 0
   );
-  const [shippingCostError, setShippingCostError] = useState(false);
 
   const [addAddress, { isLoading: isAdding }] = useAddAddressMutation();
 
+  // useEffect(() => {
+  //   if (existingFormData?.shippingAddress) {
+  //     setSelectedAddress(existingFormData.shippingAddress);
+  //   } else {
+  //     const defaultAddr = addresses.find((a) => a.isDefaultShippingAddress);
+  //     setSelectedAddress(defaultAddr || {});
+  //   }
+  // }, [addresses, existingFormData]);
   useEffect(() => {
-    if (existingFormData?.shippingAddress) {
-      setSelectedAddress(existingFormData.shippingAddress);
-    } else {
-      const defaultAddr = addresses.find((a) => a.isDefault);
-      setSelectedAddress(defaultAddr || {});
-    }
-  }, [addresses, existingFormData]);
+  if (!addresses || addresses.length === 0) return;
+  if (existingFormData?.shippingAddress?._id) {
+    const savedAddress = addresses.find(
+      (a) => a._id === existingFormData.shippingAddress._id
+    );
+    setSelectedAddress(savedAddress || {});
+  } else {
+    const defaultAddr = addresses.find((a) => a.isDefaultShippingAddress);
+    setSelectedAddress(defaultAddr || {});
+  }
+}, [addresses, existingFormData]);
+
 
   const {
     register,
@@ -120,52 +129,115 @@ export default function ShippingDetailsForm() {
     }
   }, [selectedAddress, countries]);
 
-  console.log("selectedAddress: ", selectedAddress);
 
-  const onSubmit = async (data: ShippingAddress) => {
-    console.log("data", data);
+  // const onSubmit = async (data: ShippingAddress) => {
 
-    if (!shippingCost) {
-      setShippingCostError(true);
+  //   if (shippingCost === 0) {
+  //     setShippingCostError(true);
+  //     return;
+  //   }
+  //   setShippingCostError(false);
+  //   let savedShippingAddress;
+
+  //   if (isAddingNewAddress || addresses.length === 0) {
+  //     const addressResult = await addAddress({
+  //       ...data,
+  //       fullName: existingFormData?.name,
+  //       phone: existingFormData?.phone,
+  //     }).unwrap();
+  //     savedShippingAddress = addressResult?.data || addressResult; 
+
+  //   } else {
+  //   savedShippingAddress = selectedAddress;
+  //   }
+
+  //   await refetch();
+
+  //   const shippingAddress = {
+  //     ...savedShippingAddress,
+  //     fullName: existingFormData?.name,
+  //     phone: existingFormData?.phone,
+  //     shippingAddressId: savedShippingAddress?._id || null,
+  //     _id: savedShippingAddress?._id || null,
+  //     isDefaultShippingAddress: savedShippingAddress?.isDefaultShippingAddress || false,
+  //     isDefaultBillingAddress: savedShippingAddress?.isDefaultBillingAddress || false,
+  //   };
+
+  //   dispatch(
+  //     updateCheckoutFormData({
+  //       shippingAddress: shippingAddress,
+  //       shippingCost,
+  //     })
+  //   );
+  //   await refetch();
+
+  //   dispatch(setCurrentStep(currentStep + 1));
+  // };
+
+const onSubmit = async (data: ShippingAddress) => {
+  if (shippingCost === 0) {
+    setShippingCostError(true);
+    return;
+  }
+  setShippingCostError(false);
+
+  let savedShippingAddress;
+
+  if (isAddingNewAddress || addresses.length === 0) {
+    const response = await addAddress({
+      ...data,
+      fullName: existingFormData?.name,
+      phone: existingFormData?.phone,
+    }).unwrap();
+
+    const refetched = await refetch();
+
+    const updatedAddresses =
+      refetched?.data?.user?.addresses ||
+      response?.data?.user?.addresses ||
+      [];
+
+    const lastAddress = updatedAddresses[updatedAddresses.length - 1];
+
+    if (!lastAddress) {
+      console.error("⚠️ No address found after refetch!");
       return;
     }
-    setShippingCostError(false);
 
-    let shippingAddressId = selectedAddress?.shippingAddressId;
+    savedShippingAddress = lastAddress;
+    setSelectedAddress(lastAddress);
+    reset(lastAddress);
+    setIsAddingNewAddress(false);
+  } else {
+    savedShippingAddress = selectedAddress;
+  }
 
-    if (isAddingNewAddress || !shippingAddressId) {
-      const addressResult = await addAddress({
-        ...data,
-        fullName: existingFormData?.name,
-        phone: existingFormData?.phone,
-        defaultBilling: false,
-        defaultShipping: false,
-      }).unwrap();
-      shippingAddressId = addressResult?.addresses[0]._id;
-    }
-
-    await refetch();
-
-    dispatch(
-      updateCheckoutFormData({
-        shippingAddress: {
-          ...data,
-          fullName: existingFormData?.name,
-          phone: existingFormData?.phone,
-          shippingAddressId,
-        },
-        newAddedAddresses: shippingAddressId ? [] : [shippingAddress],
-        shippingCost,
-      })
-    );
-    console.log("Inner Current Step: ", currentStep);
-
-    dispatch(setCurrentStep(currentStep + 1));
+  const shippingAddress = {
+    ...savedShippingAddress,
+    fullName: existingFormData?.name,
+    phone: existingFormData?.phone,
+    shippingAddressId: savedShippingAddress?._id || null,
+    _id: savedShippingAddress?._id || null,
+    isDefaultShippingAddress:
+      savedShippingAddress?.isDefaultShippingAddress || false,
+    isDefaultBillingAddress:
+      savedShippingAddress?.isDefaultBillingAddress || false,
   };
 
+  dispatch(
+    updateCheckoutFormData({
+      shippingAddress,
+      shippingCost,
+    })
+  );
+
+  dispatch(setCurrentStep(currentStep + 1));
+};
+
+
   return (
-    <Paper className="p-4">
-      <Typography variant="h6" gutterBottom>
+    <Paper className="p-4" style={{backgroundColor:"#1f2937"}}>
+      <Typography variant="h6" gutterBottom style={{color:"white"}}>
         Shipping Details
       </Typography>
 
@@ -176,6 +248,16 @@ export default function ShippingDetailsForm() {
             fullWidth
             select
             label="Select Shipping Address"
+            sx={{
+                "& .MuiInputLabel-root": {
+            fontSize: "0.9rem",
+            top: "-4px",
+            color: error ? "#fc9b04" : "#fc9b04", 
+              },
+              "& .MuiInputLabel-shrink": {
+                color: error ? "#fc9b04" : "#fc9b04",
+              },
+            }}
             value={selectedAddress?._id || ""}
             onChange={(e) => {
               const selected = addresses.find(
@@ -234,43 +316,112 @@ export default function ShippingDetailsForm() {
       {/* Address Form */}
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6} style={{padding:"20px 20px"}}>
             <TextField
               label="Address Line 1"
               fullWidth
               {...register("address1", { required: "Required" })}
               error={!!errors.address1}
               helperText={errors.address1?.message}
+              sx={{
+                "& .MuiInputBase-root": {
+                  height: 43, 
+                },
+                "& .MuiOutlinedInput-input": {
+                  padding: "0 8px",   
+                  height: "100%",   
+                  display: "flex",
+                  alignItems: "center", 
+                },
+                "& .MuiInputLabel-root": {
+                  fontSize: "0.8rem",
+                  top: "-4px",
+                  color: "#fc9b04",
+                },
+           
+                display: "flex", flexDirection: "column", gap: 2
+              }}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6} style={{padding:"20px 20px"}}>
             <TextField
               label="Address Line 2"
               fullWidth
               {...register("address2", { required: "Required" })}
               error={!!errors.address2}
               helperText={errors.address2?.message}
+              sx={{
+                "& .MuiInputBase-root": {
+                  height: 43, 
+                },
+                "& .MuiOutlinedInput-input": {
+                  padding: "0 8px",   
+                  height: "100%",   
+                  display: "flex",
+                  alignItems: "center", 
+                },
+                "& .MuiInputLabel-root": {
+                  fontSize: "0.8rem",
+                  top: "-4px",
+                  color: "#fc9b04",
+                },
+                display: "flex", flexDirection: "column", gap: 2 
+              }}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6} style={{padding:"20px 20px"}}>
             <TextField
               label="City"
               fullWidth
               {...register("city", { required: "Required" })}
               error={!!errors.city}
               helperText={errors.city?.message}
+              sx={{
+                "& .MuiInputBase-root": {
+                  height: 43, 
+                },
+                "& .MuiOutlinedInput-input": {
+                  padding: "0 8px",   
+                  height: "100%",   
+                  display: "flex",
+                  alignItems: "center", 
+                },
+                "& .MuiInputLabel-root": {
+                  fontSize: "0.8rem",
+                  top: "-4px",
+                  color: "#fc9b04",
+                },
+                display: "flex", flexDirection: "column", gap: 2 
+              }}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6} style={{padding:"20px 20px"}}>
             <TextField
               label="Postal Code"
               fullWidth
               {...register("postalCode", { required: "Required" })}
               error={!!errors.postalCode}
               helperText={errors.postalCode?.message}
+              sx={{
+                "& .MuiInputBase-root": {
+                  height: 43, 
+                },
+                "& .MuiOutlinedInput-input": {
+                  padding: "0 8px",   
+                  height: "100%",   
+                  display: "flex",
+                  alignItems: "center", 
+                },
+                "& .MuiInputLabel-root": {
+                  fontSize: "0.8rem",
+                  top: "-4px",
+                  color: "#fc9b04",
+                },
+                display: "flex", flexDirection: "column", gap: 2 
+              }}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6} style={{padding:"20px 20px"}}>
             <TextField
               label="Country"
               select
@@ -285,6 +436,23 @@ export default function ShippingDetailsForm() {
               }}
               error={!!errors.country}
               helperText={errors.country?.message}
+              sx={{
+                "& .MuiInputBase-root": {
+                  height: 43, 
+                },
+                "& .MuiOutlinedInput-input": {
+                  padding: "0 8px",
+                  height: "100%",   
+                  display: "flex",
+                  alignItems: "center", 
+                },
+                "& .MuiInputLabel-root": {
+                  fontSize: "0.8rem",
+                  top: "-4px",
+                  color: "#fc9b04",
+                },
+                display: "flex", flexDirection: "column", gap: 2 
+              }}
             >
               {countries.map((c) => (
                 <MenuItem key={c._id} value={c.name}>
@@ -293,11 +461,27 @@ export default function ShippingDetailsForm() {
               ))}
             </TextField>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6} style={{padding:"20px 20px"}}>
             <TextField
               label="State"
               select
-              fullWidth
+              sx={{
+                "& .MuiInputBase-root": {
+                  height: 43, 
+                },
+                "& .MuiOutlinedInput-input": {
+                  padding: "0 8px",   
+                  height: "100%",   
+                  display: "flex",
+                  alignItems: "center", 
+                },
+                "& .MuiInputLabel-root": {
+                  fontSize: "0.8rem",
+                  top: "-4px",
+                  color: "#fc9b04",
+                },
+                display: "flex", flexDirection: "column", gap: 2 
+              }}
               {...register("state", { required: "Required" })}
               value={watchedState || ""}
               onChange={(e) => setValue("state", e.target.value)}
@@ -315,7 +499,7 @@ export default function ShippingDetailsForm() {
 
         {/* Shipping Cost */}
         <FormControl component="fieldset" className="mt-4">
-          <FormLabel component="legend">Shipping Cost</FormLabel>
+          <FormLabel component="legend" style={{color:"white"}}>Shipping Cost</FormLabel>
           <RadioGroup
             row
             name="shippingCost"
@@ -323,8 +507,9 @@ export default function ShippingDetailsForm() {
             onChange={(e) => setShippingCost(Number(e.target.value))}
           >
             <FormControlLabel
+            style={{color:"white"}}
               value="8"
-              control={<Radio />}
+              control={<Radio  style={{color:"white"}} />}
               label={
                 <span>
                   <LocalShippingIcon /> UPS - $8
@@ -332,11 +517,12 @@ export default function ShippingDetailsForm() {
               }
             />
             <FormControlLabel
+            style={{color:"white"}}
               value="16"
-              control={<Radio />}
+              control={<Radio style={{color:"white"}} />}
               label={
                 <span>
-                  <LocalShippingIcon /> UPS - $16
+                  <LocalShippingIcon style={{color:"white"}} /> UPS - $16
                 </span>
               }
             />

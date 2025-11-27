@@ -5,9 +5,10 @@ import { Container, Box, Typography, Paper } from "@mui/material";
 
 const Register: React.FC = () => {
   return (
-    <section className="d-flex align-items-center justify-content-center min-vh-100">
+    <section className="d-flex align-items-center justify-content-center" style={{backgroundColor:"#020817",padding:"80px"}}>
       <Container>
         <Box
+          style={{backgroundColor:"#1f2937"}}
           component={Paper}
           elevation={10}
           sx={{
@@ -19,7 +20,7 @@ const Register: React.FC = () => {
             overflow: "hidden",
           }}
         >
-          <Typography variant="h5" align="center" gutterBottom color="secondary">
+          <Typography variant="h5" align="center" gutterBottom style={{color:"white"}} >
             Create an Account
           </Typography>
           <RegisterForm role="USER" />

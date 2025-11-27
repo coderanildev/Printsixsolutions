@@ -13,10 +13,10 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
   totalPages = 0,
 }) => {
   return (
-    <Box>
+    <Box className="py-2">
       <div className="row">
         {products.map((product) => (
-          <div className="col-12 col-md-4 col-lg-3 mb-4" key={product.id}>
+          <div className="col-12 col-md-4 col-lg-3 mb-4" key={product.id}  >
             <Product product={product} reviews={product.reviews} />
           </div>
         ))}

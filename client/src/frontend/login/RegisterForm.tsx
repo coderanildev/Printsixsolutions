@@ -72,9 +72,23 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ role = "USER" }) => {
     <Box
       component="form"
       onSubmit={handleSubmit(onSubmit)}
-      className="p-4"
       noValidate
       autoComplete="off"
+      sx={{
+        "& .MuiInputBase-root": {
+          height: 40, 
+        },
+        "& .MuiOutlinedInput-input": {
+          padding: "0 8px",   
+          height: "100%",   
+          display: "flex",
+          alignItems: "center", 
+        },
+        "& .MuiInputLabel-root": {
+          fontSize: "0.8rem",
+          top: "-4px"
+        }
+      }}
     >
       <input type="hidden" value={role} {...register("role")} />
 
@@ -148,7 +162,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ role = "USER" }) => {
 
       <Typography variant="body2" className="text-white text-center mb-2">
         Already have an account?{" "}
-        <a href="/login" className="text-primary fw-bold">
+        <a href="/login" className="fw-bold" style={{color:"#fc9b04"}}>
           Login
         </a>
       </Typography>
@@ -156,7 +170,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ role = "USER" }) => {
       {role === "USER" ? (
         <Typography variant="body2" className="text-white text-center">
           Are you a vendor?{" "}
-          <a href="/register-vendor" className="text-primary fw-bold">
+          <a href="/register-vendor" className="fw-bold" style={{color:"#fc9b04"}}>
             Register here
           </a>
         </Typography>

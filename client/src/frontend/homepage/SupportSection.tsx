@@ -24,35 +24,44 @@ const SupportSection: React.FC = () => {
   ];
 
   return (
-    <Box sx={{ py: 8 }}>
-      <Grid container spacing={4} justifyContent="center">
-        {items.map((item, index) => (
-          <Grid item xs={12} md={4} key={index}>
-            <Paper
-              elevation={3}
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 2,
-                p: 3,
-                border: "1px solid",
-                borderColor: "primary.main",
-                backgroundColor: "primary.main",
-                color: "white",
-              }}
+    <Box  sx={{ py: 8, backgroundColor: "#020817" }}>
+  <Grid 
+    container 
+    spacing={2}
+    sx={{ px: { xs:2, md: 25 } }} 
+  >
+    {items.map((item, index) => (
+      <Grid item xs={12} md={4} key={index}>
+        <Paper
+          
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 2,  
+            p: 3,
+            border: "1px solid",
+            borderColor: "primary.main",
+            backgroundColor: "primary.main",
+            color: "white",
+          }}
+        >
+          {item.icon}
+          <Box>
+            <Typography
+              variant="h6"
+              sx={{ textTransform: "capitalize", fontWeight: 500 }}
             >
-              {item.icon}
-              <Box>
-                <Typography variant="h6" sx={{ textTransform: "capitalize", fontWeight: 500 }}>
-                  {item.title}
-                </Typography>
-                <Typography variant="body2">{item.subtitle}</Typography>
-              </Box>
-            </Paper>
-          </Grid>
-        ))}
+              {item.title}
+            </Typography>
+            <Typography variant="body2">{item.subtitle}</Typography>
+          </Box>
+        </Paper>
       </Grid>
-    </Box>
+    ))}
+  </Grid>
+</Box>
+
+    
   );
 };
 

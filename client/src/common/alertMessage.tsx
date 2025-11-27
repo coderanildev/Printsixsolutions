@@ -49,7 +49,7 @@ export default function AlertMessages(props: any) {
           >
             <Alert
               iconMapping={{
-                // success: 
+                // success:
                 //   // <CardMedia
                 //   //   component={"img"}
                 //   //   sx={{ marginLeft: "7px" }}
@@ -58,7 +58,7 @@ export default function AlertMessages(props: any) {
                 //   //   style={{ width: 20 }}
                 //   // />
                 // ,
-                error: 
+                error: (
                   <CardMedia
                     component={"img"}
                     sx={{ marginLeft: "7px" }}
@@ -66,7 +66,7 @@ export default function AlertMessages(props: any) {
                     alt="My Image"
                     style={{ width: 20 }}
                   />
-                ,
+                ),
               }}
               className={classNameMssh}
               onClose={handleClose}

@@ -1,11 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import {
-  InputBase,
-  IconButton,
-  Paper,
-} from "@mui/material";
+import { InputBase, IconButton, Paper } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
 export default function SearchForm() {
@@ -23,22 +19,22 @@ export default function SearchForm() {
       component="form"
       onSubmit={handleSubmit(handleSearch)}
       sx={{
-        p: '2px 4px',
-        display: 'flex',
-        alignItems: 'center',
-        width: '100%',
-        border: '1px solid #1976d2',
+        p: "2px 4px",
+        display: "flex",
+        alignItems: "center",
+        width: "100%",
+        border: "1px solid #1976d2",
         borderRadius: 2,
       }}
       elevation={0}
     >
-      <IconButton sx={{ p: '10px', color: 'gray' }} aria-label="search">
+      <IconButton sx={{ p: "10px", color: "gray" }} aria-label="search">
         <SearchIcon />
       </IconButton>
       <InputBase
         {...register("search")}
         placeholder="Search products..."
-        inputProps={{ 'aria-label': 'search products' }}
+        inputProps={{ "aria-label": "search products" }}
         sx={{ ml: 1, flex: 1 }}
         required
       />

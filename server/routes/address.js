@@ -23,9 +23,9 @@ const addressValidation = [
   body("address1").notEmpty().withMessage("Address line 1 is required"),
   body("address2").notEmpty().withMessage("Address line 2 is required"),
   body("city").notEmpty().withMessage("City is required"),
-  body("state").notEmpty().withMessage("State is required"),
   body("postalCode").notEmpty().withMessage("Postal code is required"),
   body("country").notEmpty().withMessage("Country is required"),
+  body("state").notEmpty().withMessage("State is required"),
 ];
 
 // Add New Address
@@ -39,7 +39,8 @@ router.post("/", checkAuth, getUser, addressValidation, async (req, res) => {
     const newAddress = req.body;
 
     if (user.addresses.length === 0) {
-      newAddress.isDefault = true;
+      newAddress.isDefaultBillingAddress = true;
+      newAddress.isDefaultShippingAddress = true;
     }
     
     user.addresses.push(newAddress);

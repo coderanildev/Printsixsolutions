@@ -51,7 +51,17 @@ const PriceFilter: React.FC<PriceFilterProps> = ({ pageUrl, search }) => {
             {...register('min', { min: 0 })}
             label="Min"
             type="number"
-            fullWidth
+            sx={{
+              "& .MuiInputBase-root": {
+                height: 30,  
+              },
+              "& .MuiOutlinedInput-input": {
+                padding: "4px 8px", 
+              },
+              "& .MuiInputLabel-root": {
+                fontSize: "0.8rem",
+              },
+            }}
             size="small"
             variant="outlined"
           />
@@ -64,13 +74,36 @@ const PriceFilter: React.FC<PriceFilterProps> = ({ pageUrl, search }) => {
             fullWidth
             size="small"
             variant="outlined"
+            sx={{
+              "& .MuiInputBase-root": {
+                height: 30,  
+              },
+              "& .MuiOutlinedInput-input": {
+                padding: "4px 8px", 
+              },
+              "& .MuiInputLabel-root": {
+                fontSize: "0.8rem",
+              },
+            }}
           />
         </div>
-        <div className="col-md-4 d-flex align-items-end">
-          <Button type="submit" variant="contained" color="primary" fullWidth>
-            Go
-          </Button>
-        </div>
+        <div className="col-md-2 d-flex align-items-end">
+        <Button
+          type="submit"
+          variant="contained"
+     
+          size="small"
+          sx={{
+            padding: "2px 10px", 
+            fontSize: "0.75rem", 
+            minWidth: "auto", 
+            backgroundColor:"#fc9b04"
+          }}
+        >
+          Go
+        </Button>
+         </div>
+
       </form>
     </div>
   );

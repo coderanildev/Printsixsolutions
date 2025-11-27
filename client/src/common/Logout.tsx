@@ -4,10 +4,12 @@ import { logOut } from "../redux/reducer/auth";
 import { useNavigate } from "react-router-dom";
 import { useUserLogoutMutation } from "../redux/services/auth";
 import { toast } from "react-toastify";
+import { useRef } from "react";
 
 const Logout = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const didRun = useRef(false);
 
   const [isLoggedOut, setIsLoggedOut] = useState(false);
 
@@ -32,11 +34,11 @@ const Logout = () => {
     }
   };
   useEffect(() => {
-    if (!isLoggedOut) {
+    if (!didRun.current) {
+      didRun.current = true;
       handleLogout();
     }
-  }, [isLoggedOut]);
-
+  }, []);
 
   return null;
 };

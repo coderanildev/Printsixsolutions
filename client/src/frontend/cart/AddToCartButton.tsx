@@ -88,12 +88,15 @@ const AddToCartButton: React.FC<AddToCartButtonProps> = ({ product }) => {
       sx={{
         backgroundColor: addedProduct ? 'success.main' : 'primary.main',
         color: '#fff',
-        py: 1.5,
         borderRadius: 2,
         transition: 'all 0.3s ease',
+        '&.Mui-disabled': {
+          backgroundColor: addedProduct ? 'success.main' : 'grey.400',
+          color: '#fff',
+        },
         '&:hover': {
-          backgroundColor: '#fff',
-          color: addedProduct ? 'success.main' : 'primary.main',
+          backgroundColor: addedProduct ? 'success.main' : '#fff',
+          color: addedProduct ? '#fff' : 'primary.main',
           border: '1px solid',
           borderColor: addedProduct ? 'success.main' : 'primary.main',
         },

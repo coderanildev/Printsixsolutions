@@ -33,7 +33,7 @@ const Filters: React.FC<FiltersProps> = ({ pageUrl, categories, search }) => {
       </div>
 
       {/* Filters Container */}
-      <Collapse in={filtersVisible || window.innerWidth >= 768}>
+      <Collapse in={filtersVisible || window.innerWidth >= 768} >
         <Paper elevation={3} className="p-3 mt-2">
           <Box className="d-flex flex-column gap-4">
             {/* Category Filter */}

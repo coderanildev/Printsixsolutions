@@ -12,7 +12,7 @@ const DashboardTopBar: React.FC = () => {
       <Toolbar>
         {/* Sidebar Toggle */}
         <IconButton edge="start" color="inherit" aria-label="menu">
-          <MenuIcon />
+          <MenuIcon sx={{color:"white", fontSize:"32px"}} />
         </IconButton>
 
         {/* Centered Search Bar */}
@@ -21,7 +21,7 @@ const DashboardTopBar: React.FC = () => {
         </Box>
 
         {/* Notification Dropdown */}
-        <NotificationsDropdown />
+        <NotificationsDropdown   />
 
         {/* Messages Dropdown */}
         <MessagesDropdown />

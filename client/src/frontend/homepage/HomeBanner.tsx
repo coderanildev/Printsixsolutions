@@ -1,10 +1,10 @@
-import React from 'react';
-import Slider from 'react-slick';
-import { Button, Typography, Container, Box } from '@mui/material';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import React from "react";
+import Slider from "react-slick";
+import { Button, Typography, Container, Box } from "@mui/material";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 interface BannerItem {
   id: number;
@@ -16,31 +16,31 @@ interface BannerItem {
 const banners: BannerItem[] = [
   {
     id: 1,
-    image: 'public/bannerimage/home-banner-one.jpg',
-    title: 'Increase print profits <br /> by lowering costs.',
+    image: "public/bannerimage/home-banner-one.jpg",
+    title: "Increase print profits <br /> by lowering costs.",
     description:
-      'With our help, you can reduce your printing costs and maximize your profit margin.',
+      "With our help, you can reduce your printing costs and maximize your profit margin.",
   },
   {
     id: 2,
-    image: 'public/bannerimage/home-banner-two.jpg',
-    title: 'Reduce costs <br /> maximize margins.',
+    image: "public/bannerimage/home-banner-two.jpg",
+    title: "Reduce costs <br /> maximize margins.",
     description:
-      'Our solutions streamline printing operations and help cut unnecessary expenses.',
+      "Our solutions streamline printing operations and help cut unnecessary expenses.",
   },
   {
     id: 3,
-    image: 'public/bannerimage/home-banner-three.jpg',
-    title: 'Streamline your print business <br /> with smart tools.',
+    image: "public/bannerimage/home-banner-three.jpg",
+    title: "Streamline your print business <br /> with smart tools.",
     description:
-      'We provide tools to improve efficiency and boost profitability in the print industry.',
+      "We provide tools to improve efficiency and boost profitability in the print industry.",
   },
   {
     id: 4,
-    image: 'public/bannerimage/home-banner-four.jpg',
-    title: 'Elevate your print business <br /> with our support.',
+    image: "public/bannerimage/home-banner-four.jpg",
+    title: "Elevate your print business <br /> with our support.",
     description:
-      'Experience better workflows, reduced costs, and happier clients.',
+      "Experience better workflows, reduced costs, and happier clients.",
   },
 ];
 
@@ -76,17 +76,18 @@ const sliderSettings = {
 
 const HomeBanner: React.FC = () => {
   return (
-    <Slider {...sliderSettings}>
+    <Slider contained {...sliderSettings}>
       {banners.map((banner) => (
         <Box
           key={banner.id}
           sx={{
             backgroundImage: `url(${banner.image})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            height: { xs: '400px', md: '600px' },
-            display: 'flex',
-            alignItems: 'center',
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            height: { xs: "400px", md: "600px" },
+            display: "flex",
+            alignItems: "center",
+            position: "relative",
           }}
         >
           <Container className="text-white">
@@ -94,18 +95,19 @@ const HomeBanner: React.FC = () => {
               variant="h2"
               component="h1"
               sx={{
-                fontWeight: 'medium',
-                marginBottom: 4,
-                fontSize: { xs: '1.75rem', md: '3rem', lg: '4rem' },
+                fontWeight: "medium",
+                marginTop: 18,
+                color:"white",
+                fontSize: { xs: "1.75rem", md: "3rem", lg: "4rem" },
               }}
               dangerouslySetInnerHTML={{ __html: banner.title }}
             />
             <Typography
               variant="body1"
               sx={{
-                color: 'primary.main',
+                color: "primary.main",
                 marginBottom: 4,
-                maxWidth: '600px',
+                maxWidth: "600px",
               }}
             >
               {banner.description}
@@ -118,8 +120,8 @@ const HomeBanner: React.FC = () => {
                 borderRadius: 2,
                 paddingX: 4,
                 paddingY: 1.5,
-                fontWeight: 'medium',
-                textTransform: 'none',
+                fontWeight: "medium",
+                textTransform: "none",
               }}
               href="/shop"
             >

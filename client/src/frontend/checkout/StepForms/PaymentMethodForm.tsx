@@ -47,12 +47,12 @@ export default function PaymentMethodForm() {
 
   return (
     <form onSubmit={handleSubmit(processData)}>
-      <Typography variant="h5" gutterBottom>
+      <Typography sx={{color:"white"}} variant="h5" gutterBottom>
         Payment Method
       </Typography>
 
       <FormControl component="fieldset" fullWidth className="mb-4">
-        <FormLabel component="legend">
+        <FormLabel component="legend" sx={{color:"white"}}>
           Which payment method do you prefer?
         </FormLabel>
 
@@ -68,7 +68,7 @@ export default function PaymentMethodForm() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  padding: 2,
+                  padding: "1px 8px",
                   border:
                     paymentMethod === "Cash On Delivery"
                       ? "2px solid #1976d2"
@@ -102,7 +102,7 @@ export default function PaymentMethodForm() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  padding: 2,
+                  padding: "1px 8px",
                   border:
                     paymentMethod === "Credit Card"
                       ? "2px solid #1976d2"

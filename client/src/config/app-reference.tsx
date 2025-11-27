@@ -3,6 +3,8 @@ export const ApiRouteService = {
   logout: "user/logout",
   userSignup: "user/signup",
   userdetails: "user/userdetails",
+  updateProfile: "user/update-profile",
+  updateAddress: "user/update-address",
   category: "category",
   product: "product",
   customer: "customer",

@@ -4,6 +4,7 @@ import { Link, NavLink } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import CategoryIcon from "@mui/icons-material/Category";
+import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
 import ArticleIcon from "@mui/icons-material/Article";
 import WorkIcon from "@mui/icons-material/Work";
 import ImageIcon from "@mui/icons-material/Image";
@@ -18,6 +19,7 @@ const DashboardSidebar: React.FC = () => {
 
   const menuItems = [
     { text: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
+    { text: "Slider", icon: <SettingsApplicationsIcon />, path: "/dashboard/showSliders" },
     { text: "Categories", icon: <CategoryIcon />, path: "/dashboard/categories" },
     { text: "Products", icon: <ArticleIcon />, path: "/dashboard/products" },
     { text: "Customers", icon: <WorkIcon />, path: "/dashboard/customers" },

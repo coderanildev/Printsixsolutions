@@ -23,9 +23,9 @@ const FilterComponent: React.FC<FilterComponentProps> = ({ filterData, categorie
   const { title, products, productsCount, totalPages, pageUrl, search } = filterData;
 
   return (
-    <Container>
+    <Container className="py-4" maxWidth={false} sx={{ maxWidth: "1370px", mx: "auto", backgroundColor: "#020817"  }}>
       {/* Top Row: Breadcrumb and Sorting */}
-      <Grid container spacing={3} className="py-4">
+      <Grid container spacing={3} className="py-4" >
         <Grid item xs={12} md={3}>
           <Box display="flex" alignItems="center">
             <FilterBreadcrumb title={title} />
@@ -43,7 +43,7 @@ const FilterComponent: React.FC<FilterComponentProps> = ({ filterData, categorie
             <Filters pageUrl={pageUrl} categories={categories} search={search} />
           </Box>
         </Grid>
-        <Grid item xs={12} md={9}>
+        <Grid item xs={12} md={9} >
           <FilteredProducts totalPages={totalPages} products={products} />
         </Grid>
       </Grid>

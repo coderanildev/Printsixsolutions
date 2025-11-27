@@ -105,9 +105,9 @@ const CartProduct: React.FC<Props> = ({ cartItem }) => {
               aria-label="decrease"
               disabled={cartItem.quantity <= 1 || isUpdating}
             >
-              <Remove />
+              <Remove style={{color:"white"}} />
             </IconButton>
-            <Typography variant="body2" sx={{ px: 2 }}>
+            <Typography style={{color:"white"}} variant="body2" sx={{ px: 2 }}>
               {isUpdating ? '...' : cartItem.quantity}
             </Typography>
             <IconButton
@@ -117,16 +117,16 @@ const CartProduct: React.FC<Props> = ({ cartItem }) => {
               aria-label="increase"
               disabled={isUpdating}
             >
-              <Add />
+              <Add  style={{color:"white"}}/>
             </IconButton>
           </Box>
 
           <Box display="flex" alignItems="center" gap={1}>
-            <Typography variant="body1">${cartItem.salePrice}</Typography>
+            <Typography style={{color:"white"}} variant="body1">${cartItem.salePrice}</Typography>
             <IconButton
               onClick={() => handleCartItemDelete(cartItem.productId)}
               aria-label="delete"
-              color="primary"
+              style={{color:"white"}}
               disabled={isDeleting}
             >
               {isDeleting ? <CircularProgress size={20} /> : <Delete />}

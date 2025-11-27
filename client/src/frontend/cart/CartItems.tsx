@@ -10,10 +10,10 @@ interface CartItemsProps {
 
 const CartItems: React.FC<CartItemsProps> = ({ cartItems }) => {
   return (
-    <Box sx={{ padding: 2 }}>
+    <Box sx={{ padding: 2 }} >
       {cartItems.length > 0 && (
         <>
-          <Typography variant="h6" gutterBottom>
+          <Typography variant="h6" gutterBottom style={{color:"white"}}>
             Your Cart
           </Typography>
           <Grid container justifyContent="space-between" alignItems="center">
@@ -44,10 +44,25 @@ const CartItems: React.FC<CartItemsProps> = ({ cartItems }) => {
             variant="outlined"
             label="Enter coupon code"
             placeholder="name@flowbite.com"
+            sx={{
+              "& .MuiInputBase-root": {
+                height: 40, 
+              },
+              "& .MuiOutlinedInput-input": {
+                padding: "0 8px",   
+                height: "100%",   
+                display: "flex",
+                alignItems: "center", 
+              },
+              "& .MuiInputLabel-root": {
+                fontSize: "0.8rem",
+                top: "-4px"
+              }
+            }}
           />
         </Grid>
         <Grid item>
-          <Button variant="contained" color="primary">
+          <Button variant="contained" sx={{color:"white"}}>
             Apply Coupon
           </Button>
         </Grid>

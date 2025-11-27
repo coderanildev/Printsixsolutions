@@ -78,8 +78,8 @@ const SearchShop: React.FC = () => {
   };
 
   return (
-    <Container className="py-4">
-      <Typography variant="h4" gutterBottom>
+    <Container maxWidth={false} sx={{ maxWidth: "1425px", mx: "auto" }}>
+      <Typography variant="h4" paddingTop={2} sx={{color:"white", marginLeft:"25px"}}>
         Shop
       </Typography>
 

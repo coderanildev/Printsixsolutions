@@ -54,7 +54,7 @@ router.post(
 router.get("/", async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
-    const limit = 10;
+    const limit = 12;
     const skip = (page - 1) * limit;
 
     const sort = req.query.sort === "desc" ? -1 : 1;
@@ -96,6 +96,29 @@ router.get("/", async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 });
+
+/**
+ * @route   GET /api/products
+ * @desc    Get all products (for homepage new arrivals products)
+ */
+router.get("/", async (req, res) => {
+  try {
+    const products = await Product.find({})
+      .sort({ createdAt: -1 }); 
+
+    res.status(200).json({
+      success: true,
+      products,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      error: err.message,
+    });
+  }
+});
+
 
 /**
  * @route   GET /api/products/:id

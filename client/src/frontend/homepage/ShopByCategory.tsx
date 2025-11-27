@@ -22,23 +22,25 @@ type ShopByCategoryProps = {
 
 const ShopByCategory: React.FC<ShopByCategoryProps> = ({ categories }) => {
   return (
-    <div className="container pb-5">
-      <Typography variant="h5" className="text-primary text-uppercase mb-4">
+    <div style={{  backgroundColor: "#020817" }}>
+    <div className="container pb-5" style={{  backgroundColor: "#020817" }}>
+      <Typography variant="h5" className="text-uppercase mb-4" color="#fc9b04">
         Shop By Category
       </Typography>
       <Grid container spacing={3}>
         {categories.map((category) => (
           <Grid item xs={12} sm={6} md={3} key={category.id}>
-            <Card className="shadow-sm border border-primary rounded overflow-hidden position-relative">
+            <Card  className="shadow-sm rounded overflow-hidden position-relative" >
               <Box
                 position="relative"
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
-                pt={4}
+                pt={2}
                 px={4}
+                backgroundColor= "#fc9b04"  
               >
-                <div
+                <div 
                   style={{
                     position: "absolute",
                     width: "12rem",
@@ -54,6 +56,8 @@ const ShopByCategory: React.FC<ShopByCategoryProps> = ({ categories }) => {
                 />
                 <a href={`/category/${category.slug}`}>
                   <CardMedia
+                    onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
+                    onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
                     component="img"
                     height="160"
                     image={category.imageUrl}
@@ -78,6 +82,7 @@ const ShopByCategory: React.FC<ShopByCategoryProps> = ({ categories }) => {
           </Grid>
         ))}
       </Grid>
+    </div>
     </div>
   );
 };

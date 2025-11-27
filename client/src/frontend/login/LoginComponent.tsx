@@ -5,9 +5,9 @@ import { Toaster } from "react-hot-toast";
 
 const LoginComponent: React.FC = () => {
   return (
-    <section className="d-flex align-items-center justify-content-center min-vh-100">
+    <section className="d-flex align-items-center justify-content-center" style={{backgroundColor:"#020817",padding:"100px"}}>
       <Container maxWidth="sm">
-        <Box
+        <Box style={{backgroundColor:"#1f2937"}}
           component={Paper}
           elevation={10}
           sx={{
@@ -19,7 +19,7 @@ const LoginComponent: React.FC = () => {
             overflow: "hidden",
           }}
         >
-          <Typography variant="h5" align="center" gutterBottom color="secondary.main">
+          <Typography variant="h5" sx={{color:"white"}} align="center" gutterBottom color="secondary.main">
             Login
           </Typography>
 

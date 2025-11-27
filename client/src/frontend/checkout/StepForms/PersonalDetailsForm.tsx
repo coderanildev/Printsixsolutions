@@ -8,6 +8,7 @@ import {
 } from "../../../redux/reducer/checkout";
 import { User } from "../../../types/user";
 import { RootState } from "../../../redux/Store";
+import { colors } from "@mui/material";
 
 type PersonalDetailsFormData = {
   name: string;
@@ -44,22 +45,16 @@ export default function PersonalDetailsForm({ userData }: StepFormProps) {
   } = useForm({ defaultValues: initialValues });
 
   async function processData(data: PersonalDetailsFormData) {
-    // if (userId) {
-    //   data.userId = userId;
-    //   dispatch(updateCheckoutFormData(data));
-    //   dispatch(setCurrentStep(currentStep + 1));
-    //   console.log(data);
-    // }
     dispatch(updateCheckoutFormData(data));
     dispatch(setCurrentStep(currentStep + 1));
-    console.log(data);
+    console.log('personal',data);
   }
   return (
     <form onSubmit={handleSubmit(processData)}>
-      <h2 className="text-xl font-semibold mb-4 text-primary">
+      <h2 className="text-xl font-semibold mb-4" style={{color:"white"}}>
         Personal Details
       </h2>
-      <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
+      <div className="grid gap-4 sm:grid-cols-2 sm:gap-6" style={{color:"white"}}>
         <TextInput
           label={"Name"}
           name={"name"}
@@ -73,6 +68,7 @@ export default function PersonalDetailsForm({ userData }: StepFormProps) {
           register={register}
           errors={errors}
           className="w-full"
+          
         />
         <TextInput
           label={"Phone Number"}

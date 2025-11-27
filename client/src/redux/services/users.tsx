@@ -17,7 +17,25 @@ export const userApi = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+
+    updateUserProfile: builder.mutation<any, any>({
+      query: (data) => ({
+        url: ApiRouteService.updateProfile,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+
+    updateUserAddress: builder.mutation({
+      query: ({ id, ...data }) => ({
+        // url: ApiRouteService.updateAddress,
+        url: `/user/update-address/${id}`, 
+        method: "PUT",
+        body: data,
+      }),
+    }),
+
   }),
 });
 
-export const { useUserSignupMutation, useGetUserDetailsQuery } = userApi;
+export const { useUserSignupMutation, useGetUserDetailsQuery,  useUpdateUserProfileMutation, useUpdateUserAddressMutation} = userApi;

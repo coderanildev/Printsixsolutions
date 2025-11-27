@@ -86,7 +86,22 @@ const LoginForm: React.FC = () => {
       className="p-4"
       noValidate
       autoComplete="off"
-      sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+      sx={{
+        "& .MuiInputBase-root": {
+          height: 40, 
+        },
+        "& .MuiOutlinedInput-input": {
+          padding: "0 8px",   
+          height: "100%",   
+          display: "flex",
+          alignItems: "center", 
+        },
+        "& .MuiInputLabel-root": {
+          fontSize: "0.8rem",
+          top: "-4px"
+        },
+        display: "flex", flexDirection: "column", gap: 2 
+      }}
     >
       <div>
         <TextField
@@ -123,6 +138,7 @@ const LoginForm: React.FC = () => {
         </Button>
       ) : (
         <Button
+          sx={{color:"white"}}
           fullWidth
           variant="contained"
           type="submit"
@@ -137,15 +153,15 @@ const LoginForm: React.FC = () => {
         <Typography variant="body2">
           <Link
             to="/forget-password"
-            className="text-primary"
+            style={{color:"#fc9b04"}}
           >
             Forgot Password?
           </Link>
         </Typography>
 
-        <Typography variant="body2">
+        <Typography variant="body2" style={{color:"white"}}>
           Don&apos;t have an account?{" "}
-          <Link to="/register" className="text-primary">
+          <Link to="/register" style={{color:"#fc9b04"}}>
             Register now
           </Link>
         </Typography>

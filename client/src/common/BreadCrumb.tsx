@@ -1,16 +1,17 @@
 import React from "react";
 import { useLocation, Link } from "react-router-dom";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { colors } from "@mui/material";
 
 export default function BreadCrumb() {
   const location = useLocation();
   const pathArr = location.pathname.split("/").filter(Boolean);
 
   return (
-    <nav aria-label="breadcrumb" className="my-3">
-      <ol className="breadcrumb d-flex align-items-center">
-        <li className="breadcrumb-item">
-          <Link to="/" className="text-primary text-decoration-none">
+    <nav className="my-3">
+      <ol className="breadcrumb m-0 p-0" style={{ background: "transparent" }}>
+        <li className="" >
+          <Link to="/" style={{color:"#fc9b04"}}>
             Home
           </Link>
         </li>
@@ -20,12 +21,12 @@ export default function BreadCrumb() {
           return (
             <li
               key={index}
-              className={`breadcrumb-item d-flex align-items-center ${
+              className={`${
                 isLast ? "active text-white" : ""
               }`}
               aria-current={isLast ? "page" : undefined}
             >
-              <ChevronRightIcon fontSize="small" className="mx-1 text-muted" />
+              <ChevronRightIcon fontSize="small" className="mx-1 text-muted"  />
               {isLast ? (
                 <span className="text-white text-capitalize">{item}</span>
               ) : (

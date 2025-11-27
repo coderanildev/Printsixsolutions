@@ -14,14 +14,14 @@ export default function CartBanner() {
     isCartLoading,
     cartError,
   } = useCartItems(isAuthenticated);
-  console.log('cartItems', cartItems);
+  // console.log('cartItems', cartItems);
   
   const subTotal = cartItems
   .reduce((acc, item) => acc + (item.salePrice || 0) * (item.quantity || 0), 0)
   .toFixed(2);
 
   return (
-    <Box className="bg-light rounded mb-4 p-3">
+    <Box className="rounded mb-4 p-3" >
       <div className="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center">
         <Stack direction="row" spacing={2} alignItems="center" className="flex-grow-1">
           <Avatar sx={{ bgcolor: 'primary.main', width: 40, height: 40 }}>
@@ -43,6 +43,7 @@ export default function CartBanner() {
             sx={{
               textTransform: "none",
               fontWeight: "bold",
+               color: 'white',
               '&:hover': {
                 backgroundColor: 'white',
                 color: 'primary.main',

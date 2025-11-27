@@ -25,7 +25,7 @@ export default function StepForm({ userData }: StepFormProps) {
       case 2:
         return <ShippingDetailsForm />;
       case 3:
-        return <BillingDetailsForm addresses={userData?.addresses} />;
+        return <BillingDetailsForm />;
       case 4:
         return <PaymentMethodForm />;
       case 5:

@@ -13,34 +13,34 @@ const CartSubTotalCard: React.FC<CartSubTotalCardProps> = ({ subTotal }) => {
   const totalPrice = (Number(subTotal) + shipping + tax).toFixed(2);
 
   return (
-    <Box sx={{ p: 2, borderRadius: 2, backgroundColor: '#fff' }} className="shadow-sm">
-      <Typography variant="h5" gutterBottom>
+    <Box sx={{ p: 2, borderRadius: 2 }} className="shadow-sm">
+      <Typography variant="h5" gutterBottom sx={{color:"white"}}>
         Cart Total
       </Typography>
 
       <Box display="flex" justifyContent="space-between" mb={2}>
-        <Typography>Subtotal</Typography>
-        <Typography>${subTotal.toFixed(2)}</Typography>
+        <Typography sx={{color:"white"}}>Subtotal</Typography>
+        <Typography sx={{color:"white"}}>${subTotal.toFixed(2)}</Typography>
       </Box>
       <Divider />
 
       <Box display="flex" justifyContent="space-between" mt={2} mb={1}>
-        <Typography>Tax</Typography>
-        <Typography>${tax.toFixed(2)}</Typography>
+        <Typography sx={{color:"white"}}>Tax</Typography>
+        <Typography sx={{color:"white"}}>${tax.toFixed(2)}</Typography>
       </Box>
 
       <Box display="flex" justifyContent="space-between" mb={1}>
-        <Typography>Shipping</Typography>
-        <Typography>${shipping.toFixed(2)}</Typography>
+        <Typography sx={{color:"white"}}>Shipping</Typography>
+        <Typography sx={{color:"white"}}>${shipping.toFixed(2)}</Typography>
       </Box>
 
-      <Typography variant="body2" color="textSecondary" sx={{ borderBottom: 1, borderColor: 'grey.300', pb: 2 }}>
+      <Typography variant="body2" color="textSecondary" sx={{color:"white", borderBottom: 1, borderColor: 'grey.300', pb: 2 }}>
         We only charge for shipping
       </Typography>
 
       <Box display="flex" justifyContent="space-between" py={2}>
-        <Typography fontWeight="bold">Total</Typography>
-        <Typography fontWeight="bold">${totalPrice}</Typography>
+        <Typography fontWeight="bold" sx={{color:"white"}}>Total</Typography>
+        <Typography fontWeight="bold" sx={{color:"white"}}>${totalPrice}</Typography>
       </Box>
 
       <Box mt={4}>
@@ -51,6 +51,7 @@ const CartSubTotalCard: React.FC<CartSubTotalCardProps> = ({ subTotal }) => {
           component={RouterLink}
           to="/checkout"
           className="rounded"
+          sx={{color:"white"}}
         >
           Continue to Checkout
         </Button>

@@ -26,7 +26,7 @@ const MessagesDropdown: React.FC = () => {
     <>
       <IconButton color="inherit" onClick={handleClick}>
         <Badge badgeContent={7} color="error">
-          <MailIcon />
+          <MailIcon sx={{color:"white", fontSize:"32px"}} />
         </Badge>
       </IconButton>
 

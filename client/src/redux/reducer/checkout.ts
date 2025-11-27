@@ -22,6 +22,7 @@ const checkoutSlice = createSlice({
       state.currentStep = action.payload;
     },
     updateCheckoutFormData: (state, action: PayloadAction<CheckoutFormData>) => {
+      
       state.checkoutFormData = {
         ...state.checkoutFormData,
         ...action.payload,

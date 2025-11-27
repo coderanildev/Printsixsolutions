@@ -21,8 +21,8 @@ const SearchResultsCount: React.FC<SearchResultsCountProps> = ({ title, resultsC
   return (
     <div className="ms-2">
       <Typography variant="body1">
-        <span className="text-primary">{title}:</span>{" "}
-        <span color="primary.main">
+        <span style={{color:"#fc9b04"}}>{title}:</span>{" "}
+        <span style={{color:"white"}}>
           Showing {startRange}-{endRange} of {resultsCount} results
         </span>
       </Typography>

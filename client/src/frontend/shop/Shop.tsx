@@ -75,27 +75,27 @@ const Shop: React.FC = () => {
   };
 
   return (
-    <Container className="py-4">
-      <Typography variant="h4" gutterBottom>
+    <Container className="py-4" maxWidth={false} sx={{ backgroundColor: "#020817"}}>
+      {/* <Typography variant="h4" gutterBottom>
         Shop
-      </Typography>
+      </Typography> */}
 
       {/* Products Grid */}
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
+      <Grid>
+        <Grid item >
           <FilterComponent filterData={filterData} categories={categories} />
         </Grid>
       </Grid>
 
       {/* Pagination */}
-      <Box mt={4} display="flex" justifyContent="center">
+      {/* <Box mt={4} display="flex" justifyContent="center">
         <Pagination
           count={totalPages}
           page={page}
           onChange={handlePageChange}
           color="primary"
         />
-      </Box>
+      </Box> */}
     </Container>
   );
 };

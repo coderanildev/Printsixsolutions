@@ -23,6 +23,18 @@ import Register from "../frontend/login/Register";
 import Customers from "../frontend/dashboard/customers";
 import Cart from "../frontend/cart/Cart";
 import Checkout from "../frontend/checkout/Checkout";
+import Customer from "../frontend/homepage/Customer";
+import Contact from "../frontend/contact";
+import Orders from "../frontend/homepage/Orders";
+import Address from "../frontend/homepage/Address";
+import Changepassword from "../frontend/homepage/Changepassword";
+import UserProfile from "../frontend/homepage/UserProfile"
+
+import ShowSliders from "../frontend/dashboard/showsliders";
+import AddSlider from "../frontend/dashboard/showsliders/AddSlider";
+// import EditSlider from "../frontend/dashboard/categories/EditCategory"
+
+
 
 const frontendRoutes = createBrowserRouter([
   {
@@ -34,9 +46,43 @@ const frontendRoutes = createBrowserRouter([
         element: <HomePage />,
         index: true,
       },
+       {
+        path: "/Customer",
+        element:(
+        <ProtectedRoutes allowedRoles={["USER"]}>
+          <Customer />
+        </ProtectedRoutes>
+        ),
+        children:[
+          {
+           index:true,
+           element:<UserProfile/>
+          },
+          {
+           path:"Profile",
+           element:<UserProfile/>
+          },
+          {
+           path:"Orders",
+           element:<Orders/>
+          },
+          {
+           path:"Address",
+           element:<Address/>
+          },
+          {
+           path:"Changepassword",
+           element:<Changepassword/>
+          }
+        ]
+      },
       {
-        path: "/about-us",
+        path: "/about",
         element: <About />,
+      },
+      {
+        path: "/contact",
+        element: <Contact />,
       },
       {
         path: "/shop",
@@ -151,6 +197,18 @@ const frontendRoutes = createBrowserRouter([
         path: "cart",
         element: <Cart />,
       },
+      {
+        path: "ShowSliders",
+        element: <ShowSliders />,
+      },
+      {
+        path: "add-slider",
+        element: <AddSlider />,
+      },
+      // {
+      //   path:"edit-slider/:id",
+      //   element: <EditSlider/>
+      // }
     ],
   },
 ]);

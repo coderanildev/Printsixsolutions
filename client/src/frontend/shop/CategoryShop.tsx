@@ -59,7 +59,7 @@ const CategoryShop: React.FC = () => {
   };
 
   return (
-    <div className="container mt-4">
+    <div  maxWidth={false} sx={{ maxWidth: "1370px", mx: "auto" }} >
 
       <FilterComponent filterData={filterData} categories={categoriesWithProducts} />
 

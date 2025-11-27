@@ -67,7 +67,7 @@ const Layout = withErrorBoundary(() => {
 
       <div>
         <Header />
-        <main>
+        <main  style={{ backgroundColor: "#020817" }}>
           <Outlet />
         </main>
         <Footer/>

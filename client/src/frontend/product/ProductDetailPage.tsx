@@ -32,7 +32,8 @@ const ProductDetailPage = () => {
   const productReviews = [];
 
   return (
-    <Container className="py-4">
+    <Box sx={{ backgroundColor: "#020817", py: 4 }}>
+    <Container className="py-4" >
       <BreadCrumb />
       <Grid container spacing={4}>
         <Grid item xs={12} md={4}>
@@ -43,7 +44,7 @@ const ProductDetailPage = () => {
         </Grid>
         <Grid item xs={12} md={8}>
           <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-            <Typography variant="h5" color="primary">{product.title}</Typography>
+            <Typography variant="h5" style={{color:"#fc9b04"}}>{product.title}</Typography>
             <IconButton onClick={() => navigator.clipboard.writeText(urlToShare)}>
               <ShareIcon />
             </IconButton>
@@ -51,23 +52,23 @@ const ProductDetailPage = () => {
 
           <ProductRating reviews={productReviews} />
 
-          <Typography variant="body1" mt={2}>
+          <Typography variant="body1" sx={{color:"white"}} mt={2}>
             {product.description}
           </Typography>
 
           <Typography variant="body2" mt={2}>
-            <strong>Category: </strong>
-            <a href={`/category/${category.slug}`}>
+            <strong  style={{color:"#fc9b04"}}>Category: </strong>
+            <a style={{color:"white"}} href={`/category/${category.slug}`}>
               {category.title}
             </a>
           </Typography>
 
-          <Typography variant="body2" mt={1}>
-            <strong>SKU:</strong> {product.sku}
+          <Typography variant="body2"  style={{color:"white"}} mt={1}>
+            <strong  style={{color:"#fc9b04"}}>SKU:</strong> {product.sku}
           </Typography>
 
-          <Typography variant="body2" mt={1}>
-            <strong>Stock:</strong> {product.productStock}
+          <Typography variant="body2"  style={{color:"white"}} mt={1}>
+            <strong  style={{color:"#fc9b04"}}>Stock:</strong> {product.productStock}
           </Typography>
 
           <Box display="flex" alignItems="center" gap={2} mt={2}>
@@ -113,6 +114,7 @@ const ProductDetailPage = () => {
         userData={userData}
       />
     </Container>
+    </Box>
   );
 };
 

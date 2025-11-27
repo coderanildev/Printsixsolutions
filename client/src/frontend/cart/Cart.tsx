@@ -33,15 +33,15 @@ export default function Cart(): JSX.Element {
   const subTotalNumber = Number(subTotal);
 
   return (
-    <Container sx={{ py: 4 }}>
+    <Container  maxWidth={false}  style={{backgroundColor:"#020817",padding:"100px"}}>
       <BreadCrumb />
       {cartItems.length > 0 ? (
         <Grid container spacing={4}>
-          <Grid item xs={12} md={8}>
+          <Grid item xs={12} md={8} >
             <CartItems cartItems={cartItems} />
           </Grid>
           <Grid item xs={12} md={4}>
-            <Paper elevation={3} sx={{ p: 3, bgcolor: 'background.paper' }}>
+            <Paper elevation={3} sx={{ p: 3, bgcolor: '#1f2937' }}>
               <CartSubTotalCard subTotal={subTotalNumber} />
             </Paper>
           </Grid>

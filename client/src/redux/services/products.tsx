@@ -16,6 +16,14 @@ export const productApi = apiSlice.injectEndpoints({
       providesTags: ["Product"],
     }),
 
+    getAllProductNewArrival: builder.query({
+      query: () => ({
+        url: `${ApiRouteService.product}`,
+        method: "GET",
+      }),
+      providesTags: ["Product"],
+    }),
+
     addProduct: builder.mutation<any, any>({
       query: (data) => ({
         url: ApiRouteService.product,
@@ -68,5 +76,6 @@ export const {
   useGetProductBySlugQuery,
   useAddProductMutation,
   useUpdateProductMutation,
-  useDeleteProductMutation
+  useDeleteProductMutation,
+  useGetAllProductNewArrivalQuery,
 } = productApi;

@@ -39,14 +39,16 @@ const Product: React.FC<{ product: ProductProps['product'] }> = ({ product }) =>
   };
 
   return (
-    <Card className="shadow-sm rounded overflow-hidden">
+    <Card className="shadow-sm rounded overflow-hidden" sx={{ height: 400 }}>
       <a href={`/products/${product.slug}`} style={{ textDecoration: 'none' }}>
         <CardMedia
           component="img"
-          height="200"
+          height="180"
           image={product.imageUrl}
           alt={product.title}
           className="object-cover"
+           sx={{
+           mt: 1}}
         />
       </a>
 
@@ -87,14 +89,14 @@ const Product: React.FC<{ product: ProductProps['product'] }> = ({ product }) =>
 
         <Box className="d-flex justify-content-between align-items-center">
           <AddToCartButton product={productForCart} />
-          <Box>
+          {/* <Box>
             <IconButton>
               <SearchIcon />
             </IconButton>
             <IconButton>
               <FavoriteBorderIcon />
             </IconButton>
-          </Box>
+          </Box> */}
         </Box>
       </CardContent>
     </Card>

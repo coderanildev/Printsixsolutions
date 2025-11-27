@@ -1,5 +1,5 @@
 export interface Address {
-  _id: string;
+  // _id: string;
   fullName: string;
   phone: string;
   address1: string;
@@ -8,5 +8,6 @@ export interface Address {
   state: string;
   country: string;
   postalCode: string;
-  isDefault?: boolean;
+  isDefaultBillingAddress?: boolean;
+  isDefaultShippingAddress?: boolean;
 }

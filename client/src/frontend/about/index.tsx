@@ -1,117 +1,230 @@
-import aboutAuthor from "../../assets/img/about/about-author.png";
-import Faq from "../../common/Faq";
-import { Typography } from "@mui/material";
-import BreadCrumb from "../../common/BreadCrumb";
+import React from "react";
+import {
+  Box,
+  Typography,
+  Grid,
+  Card,
+  CardContent,
+  Button,
+  Avatar,
+  Divider,
+} from "@mui/material";
+import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import VerifiedIcon from "@mui/icons-material/Verified";
 
 const About = () => {
   return (
-    <>
-      <BreadCrumb breadCrumTitle="About UHC" pageName="About Us" />
-      <section className="tp-about-area tp-abouts-area position-relative pt-120 pb-100 fix">
-        <div className="container">
-          {/* <div className="row">
-          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            
-          </div>
-        </div> */}
-          <div className="row">
-            <div className="col-xl-6 col-lg-8 col-md-10">
-              <div
-                className="tp-about-img-two tp-abouts-img-two position-relative mr-80 wow fadeInUp"
-                data-wow-delay=".4s"
-              >
-                <img
-                  src="./img/service/commercial-cleaning-service.png"
-                  className="img-fluid"
-                  alt="about image"
-                  style={{width:'70%'}}
-                />
-                <img
-                  src="./img/service/post-renovation-cleaning.jpg"
-                  className="img-fluid img-second"
-                  alt="about image"
-                  style={{width:"80%"}}
-                />
-                <div className="tp-about-img-two-badge">
-                  <h3>20</h3>
-                  <h5>
-                    years <br />
-                    Experience
-                  </h5>
-                </div>
-              </div>
-            </div>
+    <Box
+      sx={{
+        backgroundColor: "#020817",
+        minHeight: "100vh",
+        color: "white",
+        py: 8,
+        px: { xs: 3, sm: 6, md: 10 },
+      }}
+    >
+      {/* ---- Header Section ---- */}
+      <Box textAlign="center" mb={6}>
+        <Typography
+          variant="h3"
+          sx={{
+            fontWeight: "bold",
+            color: "#fc9b04",
+            mb: 2,
+            textTransform: "uppercase",
+            letterSpacing: "1px",
+          }}
+        >
+          About Us
+        </Typography>
+        <Typography
+          variant="body1"
+          sx={{
+            maxWidth: 700,
+            mx: "auto",
+            color: "#ccc",
+            lineHeight: 1.6,
+          }}
+        >
+          Welcome to <strong style={{ color: "#fc9b04" }}>ShopEase</strong> —
+          your one-stop destination for stylish, affordable, and quality
+          products. We believe shopping should be easy, fun, and reliable.
+        </Typography>
+      </Box>
 
-            <div className="col-xl-6 col-md-10">
-              <div
-                className="tp-about-text tp-about-inner-page-text z-index wow fadeInUp"
-                data-wow-delay=".6s"
-              >
-                <div className="section-title-wrapper mb-30">
-                  <h5 className="tp-section-subtitle common-yellow-shape mb-20 heading-color-black">
-                    About our UHC
-                  </h5>
-                  <h2 className="tp-section-title heading-color-black">
-                    Our Success Cleaning <br />
-                    Up your Mess
-                  </h2>
-                </div>
-                <p className="mb-40">
-                  UHC is a professional cleaning company providing cleaning
-                  services throughout British Columbia. We provide cleaning
-                  services for commercial properties, offices, residential
-                  buildings, warehouses, banks, hospitals, senior homes,
-                  restaurants, educational institutions, and construction-sites
-                  as well. We excel in providing top-notch services. Our
-                  experienced team has all the relevant certifications and
-                  high-tech equipment’s to perform the job.
-                </p>
+      {/* ---- Mission Section ---- */}
+      <Grid container spacing={4} alignItems="center">
+        <Grid item xs={12} md={6}>
+          <img
+            src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=900&q=80"
+            alt="Our Mission"
+            style={{
+              width: "100%",
+              borderRadius: "20px",
+              boxShadow: "0px 0px 15px rgba(252,155,4,0.3)",
+            }}
+          />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Typography variant="h4" sx={{ color: "#fc9b04", mb: 2 }}>
+            Our Mission
+          </Typography>
+          <Typography variant="body1" sx={{ color: "#ccc", lineHeight: 1.8 }}>
+            Our mission is to bring the best online shopping experience right to
+            your fingertips. From trending fashion and electronics to lifestyle
+            essentials, we carefully curate every product to meet the highest
+            standards of quality and affordability.
+          </Typography>
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "#fc9b04",
+              color: "black",
+              fontWeight: "bold",
+              mt: 3,
+              "&:hover": { backgroundColor: "#ffb733" },
+            }}
+          >
+            Explore Our Collection
+          </Button>
+        </Grid>
+      </Grid>
 
-                <div className="row">
-                  <div className="col-sm-6">
-                    <div className="tp-about-number mb-30">
-                      <div className="tp-about-number-icon">
-                        <i className="flaticon-phone-call-1"></i>
-                      </div>
-                      <div className="tp-about-number-text">
-                        <span className="heading-color-black">
-                          Contact Now
-                        </span>
-                        <a
-                          href="tel:+1(778)800-4455"
-                          className="heading-color-black"
-                        >
-                          +1(778)800-4455
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                  <div className="tp-about-number mb-30">
-                      <div className="tp-about-number-icon">
-                        <i className="flaticon-email-1"></i>
-                      </div>
-                      <div className="tp-about-number-text">
-                        <span className="heading-color-black">
-                          Email Now
-                        </span>
-                        <a
-                          href="mailto:info@uhcservices.ca"
-                          className="heading-color-black"
-                        >
-                          info@uhcservices.ca
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <Faq />
-      </section>
-    </>
+      {/* ---- Features Section ---- */}
+      <Box mt={10} textAlign="center">
+        <Typography
+          variant="h4"
+          sx={{ color: "#fc9b04", fontWeight: "bold", mb: 4 }}
+        >
+          Why Shop With Us?
+        </Typography>
+
+        <Grid container spacing={4}>
+          <Grid item xs={12} sm={4}>
+            <Card
+              sx={{
+                backgroundColor: "#1f2937",
+                borderRadius: "15px",
+                p: 3,
+                boxShadow: "0px 0px 10px rgba(252,155,4,0.2)",
+                height: "100%",
+                transition: "0.3s",
+                "&:hover": { transform: "translateY(-5px)" },
+              }}
+            >
+              <CardContent>
+                <Avatar
+                  sx={{
+                    bgcolor: "#fc9b04",
+                    width: 60,
+                    height: 60,
+                    mb: 2,
+                    mx: "auto",
+                  }}
+                >
+                  <ShoppingBagIcon sx={{ fontSize: 35, color: "black" }} />
+                </Avatar>
+                <Typography
+                  variant="h6"
+                  sx={{ fontWeight: "bold", color: "#fc9b04", mb: 1 }}
+                >
+                  Premium Quality
+                </Typography>
+                <Typography variant="body2" sx={{ color: "#ccc" }}>
+                  We handpick the finest products from trusted brands to ensure
+                  you get nothing but the best.
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid item xs={12} sm={4}>
+            <Card
+              sx={{
+                backgroundColor: "#1f2937",
+                borderRadius: "15px",
+                p: 3,
+                boxShadow: "0px 0px 10px rgba(252,155,4,0.2)",
+                height: "100%",
+                transition: "0.3s",
+                "&:hover": { transform: "translateY(-5px)" },
+              }}
+            >
+              <CardContent>
+                <Avatar
+                  sx={{
+                    bgcolor: "#fc9b04",
+                    width: 60,
+                    height: 60,
+                    mb: 2,
+                    mx: "auto",
+                  }}
+                >
+                  <LocalShippingIcon sx={{ fontSize: 35, color: "black" }} />
+                </Avatar>
+                <Typography
+                  variant="h6"
+                  sx={{ fontWeight: "bold", color: "#fc9b04", mb: 1 }}
+                >
+                  Fast & Secure Delivery
+                </Typography>
+                <Typography variant="body2" sx={{ color: "#ccc" }}>
+                  Your orders are packed with care and shipped quickly to your
+                  doorstep with reliable partners.
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid item xs={12} sm={4}>
+            <Card
+              sx={{
+                backgroundColor: "#1f2937",
+                borderRadius: "15px",
+                p: 3,
+                boxShadow: "0px 0px 10px rgba(252,155,4,0.2)",
+                height: "100%",
+                transition: "0.3s",
+                "&:hover": { transform: "translateY(-5px)" },
+              }}
+            >
+              <CardContent>
+                <Avatar
+                  sx={{
+                    bgcolor: "#fc9b04",
+                    width: 60,
+                    height: 60,
+                    mb: 2,
+                    mx: "auto",
+                  }}
+                >
+                  <VerifiedIcon sx={{ fontSize: 35, color: "black" }} />
+                </Avatar>
+                <Typography
+                  variant="h6"
+                  sx={{ fontWeight: "bold", color: "#fc9b04", mb: 1 }}
+                >
+                  100% Satisfaction
+                </Typography>
+                <Typography variant="body2" sx={{ color: "#ccc" }}>
+                  We value our customers and offer easy returns, refunds, and
+                  top-notch support for every purchase.
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      </Box>
+
+      {/* ---- Footer Section ---- */}
+      <Divider sx={{ my: 8, backgroundColor: "#333" }} />
+      <Box textAlign="center">
+        <Typography variant="body2" sx={{ color: "#777" }}>
+          © {new Date().getFullYear()} ShopEase. All rights reserved.
+        </Typography>
+      </Box>
+    </Box>
   );
 };
 
