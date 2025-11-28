@@ -7,6 +7,7 @@ export const ApiRouteService = {
   updateAddress: "user/update-address",
   category: "category",
   product: "product",
+  slider: "/slider",
   customer: "customer",
   cart: "cart",
   address: "address",

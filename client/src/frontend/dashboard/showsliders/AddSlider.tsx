@@ -7,65 +7,61 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { Controller, FormProvider, useForm } from "react-hook-form";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import slugify from "slugify";
+import { useAddSliderMutation } from "../../../redux/services/slider";
 
-
-
+type SliderFormValues = {
+  title: string;
+  slug: string;
+  description: string;
+  shortDescription: string;
+  imageUrl: string;
+  isActive: boolean;
+};
 
 const AddSlider = () => {
   const [imagePath, setImagePath] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [addSlider] = useAddSliderMutation();
+  const navigate = useNavigate();
 
-  type SliderFormValues = {
-    title: string;
-    slug: string;
-    description: string;
-    shortDescription: string;
-    imageUrl: string;
-    isActive: boolean;
-  };
-  
   const methods = useForm<SliderFormValues>({
     defaultValues: {
       title: "",
       slug: "",
-      imageUrl: "",
       description: "",
       shortDescription: "",
+      imageUrl: "",
       isActive: false,
     },
   });
 
+  const { handleSubmit, watch, setValue, reset } = methods;
 
-  const {
-    reset,
-    setValue,
-    handleSubmit,
-    watch
-  } = methods;
-
+  // Auto-generate slug on title change
   useEffect(() => {
-    const subscription = watch((value, { name }) => {
+    const sub = watch((value, { name }) => {
       if (name === "title") {
-        const slug = slugify(value.title || "", { lower: true });
-        setValue("slug", slug);
+        setValue("slug", slugify(value.title || "", { lower: true }));
       }
     });
-    return () => subscription.unsubscribe();
+    return () => sub.unsubscribe();
   }, [watch, setValue]);
 
-
-const handleImageChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  // ------------------------------
+  // Image Upload Handler
+  // ------------------------------
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
+    setUploading(true);
+
     try {
-      setUploading(true);
       const cloudName = import.meta.env.VITE_CLOUD_NAME;
       const uploadPreset = import.meta.env.VITE_UPLOAD_PRESET;
 
@@ -79,10 +75,12 @@ const handleImageChange = async (
         { method: "POST", body: formData }
       );
       const fileObj = await res.json();
+
       if (fileObj.error) throw new Error(fileObj.error.message);
 
-      setImagePath(fileObj.url);
-      setValue("imageUrl", fileObj.url);
+      // Save URL into react-hook-form
+      setImagePath(fileObj.secure_url);
+      setValue("imageUrl", fileObj.secure_url, { shouldValidate: true });
     } catch (err) {
       toast.error("Image upload failed");
       console.error(err);
@@ -91,44 +89,50 @@ const handleImageChange = async (
     }
   };
 
+  // ------------------------------
+  // Submit Form
+  // ------------------------------
   const onSubmitHandler = async (value: SliderFormValues) => {
-      try {
-        const res = await AddSlider(value);
-        console.log(res);
-        
-        if ("data" in res) {
-          toast.success("Category added successfully");
-          reset();
-          setImagePath("");
-          setValue("slug", "");
-          navigate("/dashboard/categories");
-        } else if ("error" in res) {
-          toast.error("Failed to add category");
-        }
-      } catch (error) {
-        console.error("Add category error:", error);
+    try {
+      const res = await addSlider(value);
+
+      if ("data" in res) {
+        toast.success("Slider added successfully");
+        reset();
+        setImagePath("");
+        navigate("/dashboard/add-slider");
+      } else {
+        toast.error("Failed to add slider");
       }
+    } catch (error) {
+      console.error("Submit error:", error);
+    }
   };
 
+  // ------------------------------
+  // UI
+  // ------------------------------
   return (
     <Card className="max-w-2xl mx-auto p-4 mb-4">
       <CardContent>
         <h2 className="text-xl font-bold mb-4">Add New Slider</h2>
 
-  
         <FormProvider {...methods}>
           <form onSubmit={handleSubmit(onSubmitHandler)}>
             <Grid container spacing={2}>
+
+              {/* Title */}
               <Grid item xs={12}>
                 <TextField
                   label="* Title"
                   fullWidth
                   {...methods.register("title", { required: "Title is required" })}
                   error={!!methods.formState.errors.title}
-                  helperText={methods.formState.errors.title?.message as string}
+                  helperText={methods.formState.errors.title?.message}
                 />
               </Grid>
 
+              {/* Slug */}
               <Grid item xs={12}>
                 <TextField
                   label="Slug"
@@ -137,6 +141,7 @@ const handleImageChange = async (
                 />
               </Grid>
 
+              {/* Description */}
               <Grid item xs={12}>
                 <TextField
                   label="Description"
@@ -147,6 +152,7 @@ const handleImageChange = async (
                 />
               </Grid>
 
+              {/* Short Description */}
               <Grid item xs={12}>
                 <TextField
                   label="Short Description"
@@ -155,7 +161,7 @@ const handleImageChange = async (
                 />
               </Grid>
 
-
+              {/* Active */}
               <Grid item xs={12}>
                 <Controller
                   name="isActive"
@@ -163,34 +169,55 @@ const handleImageChange = async (
                   defaultValue={false}
                   render={({ field }) => (
                     <FormControlLabel
-                      control={<Checkbox checked={!!field.value} onChange={(e) => field.onChange(e.target.checked)} />}
+                      control={
+                        <Checkbox
+                          checked={field.value}
+                          onChange={(e) => field.onChange(e.target.checked)}
+                        />
+                      }
                       label="Is Active"
                     />
                   )}
                 />
               </Grid>
 
-
-               {/* Image Upload */}
+              {/* Image upload */}
               <Grid item xs={12}>
-                <label className="form-label">Slider Image</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="form-control"
-                  disabled={uploading}
-                />
-                {imagePath && (
-                  <img
-                    src={imagePath}
-                    alt="Preview"
-                    className="mt-3 rounded shadow-sm"
-                    style={{ width: "100%", objectFit: "cover" }}
-                  />
-                )}
-              </Grid>
+                <Controller
+                  name="imageUrl"
+                  control={methods.control}
+                  rules={{ required: "Image is required" }}
+                  render={({ fieldState }) => (
+                    <>
+                      <label className="form-label">Slider Image</label>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className={`form-control ${
+                          fieldState.error ? "is-invalid" : ""
+                        }`}
+                        onChange={handleImageUpload}
+                        disabled={uploading}
+                      />
 
+                      {fieldState.error && (
+                        <small className="text-danger">
+                          {fieldState.error.message}
+                        </small>
+                      )}
+
+                      {imagePath && (
+                        <img
+                          src={imagePath}
+                          alt="Preview"
+                          className="mt-3 rounded shadow"
+                          style={{ width: "30%", height:"30%", objectFit: "cover" }}
+                        />
+                      )}
+                    </>
+                  )}
+                />
+              </Grid>
 
               {/* Submit */}
               <Grid item xs={12} className="text-end">
