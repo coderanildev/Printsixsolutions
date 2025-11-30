@@ -32,6 +32,8 @@ import UserProfile from "../frontend/homepage/UserProfile"
 
 import ShowSliders from "../frontend/dashboard/showsliders";
 import AddSlider from "../frontend/dashboard/showsliders/AddSlider";
+import EditSlider from "../frontend/dashboard/showsliders/EditSlider";
+
 // import EditSlider from "../frontend/dashboard/categories/EditCategory"
 
 
@@ -205,10 +207,10 @@ const frontendRoutes = createBrowserRouter([
         path: "add-slider",
         element: <AddSlider />,
       },
-      // {
-      //   path:"edit-slider/:id",
-      //   element: <EditSlider/>
-      // }
+      {
+        path:"edit-slider/:id",
+        element: <EditSlider/>
+      }
     ],
   },
 ]);

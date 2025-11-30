@@ -30,6 +30,8 @@ const cartRoute = require("./routes/cart");
 const addressRoute = require("./routes/address");
 const countryRoute = require("./routes/country");
 const stateRoute = require("./routes/state");
+const sliderRoute = require("./routes/slider");
+
 
 app.use(express.json());
 
@@ -41,6 +43,8 @@ app.use("/cart", cartRoute);
 app.use("/address", addressRoute);
 app.use("/country", countryRoute);
 app.use("/state", stateRoute);
+app.use("/slider", sliderRoute);
+
 
 app.use("*", (req, res) => {
   res.status(404).json({

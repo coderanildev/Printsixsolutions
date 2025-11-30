@@ -6,72 +6,97 @@ import {
   useMaterialReactTable,
 } from "material-react-table";
 import { MenuItem } from "@mui/material";
-import { useDeleteCategoryMutation, useGetAllCategoriesQuery } from "../../../redux/services/categories";
+
+
+import {
+  useGetAllSlidersQuery,
+  useDeleteSliderMutation,
+} from "../../../redux/services/slider";
 
 const ShowSliders: React.FC = () => {
   const navigate = useNavigate();
-  const { data: categoriesData, isLoading, isError } = useGetAllCategoriesQuery();
-  console.log("categoriesData: ", categoriesData);
-  
-  const [deleteCategory] = useDeleteCategoryMutation();
 
-  const handleDeleteClick = useCallback(async (id: string) => {
-    try {
-      await deleteCategory(id).unwrap();
-    } catch (error) {
-      console.error("Delete category error: ", error);
-    }
-  }, [deleteCategory]);
+  // Fetch sliders
+  const { data: slidersData, isLoading, isError } = useGetAllSlidersQuery();
+console.log('data check',slidersData);
+  // Delete slider
+  const [deleteSlider] = useDeleteSliderMutation();
+
+  const handleDeleteClick = useCallback(
+    async (id: string) => {
+      try {
+        await deleteSlider(id).unwrap();
+      } catch (error) {
+        console.error("Delete slider error: ", error);
+      }
+    },
+    [deleteSlider]
+  );
 
   const handleDeleteConfirmation = (id: string) => {
-    if (window.confirm("Are you sure you want to delete this category?")) {
+    if (window.confirm("Are you sure you want to delete this slider?")) {
       handleDeleteClick(id);
     }
   };
 
-  const columns = useMemo(() => [
+  // TABLE COLUMNS — FOR SLIDER
+ const columns = useMemo<MRT_ColumnDef<any>[]>(
+  () => [
     {
       accessorKey: "title",
-      header: "Category",
-      size: 150,
+      header: "Title",
+    },
+    {
+      accessorKey: "shortDescription",
+      header: "Short Description",  
     },
     {
       accessorKey: "description",
       header: "Description",
-      size: 150,
     },
     {
       accessorKey: "imageUrl",
       header: "Image",
-      size: 150,
       Cell: ({ cell }) => {
         const imageUrl = cell.getValue();
         return imageUrl ? (
           <img
             src={imageUrl}
-            alt="Category"
+            alt="Slider"
             style={{
-              width: 100,
-              height: 100,
+              width: 90,
+              height: 60,
               objectFit: "cover",
               borderRadius: "5px",
             }}
           />
         ) : (
-          <span style={{ color: "gray", fontStyle: "italic" }}>
-            No Image Available
-          </span>
+          <span style={{ color: "gray", fontStyle: "italic" }}>No Image</span>
         );
       },
     },
-  ], []);
+    {
+      accessorKey: "isActive",
+      header: "Active",
+      Cell: ({ cell }) =>
+        cell.getValue() ? (
+          <span style={{ color: "green", fontWeight: "bold" }}>Yes</span>
+        ) : (
+          <span style={{ color: "red", fontWeight: "bold" }}>No</span>
+        ),
+    },
+  ],
+  []
+);
 
-  // Ensure useMaterialReactTable is called unconditionally
+
+  // MATERIAL TABLE
   const table = useMaterialReactTable({
     columns,
-    data: categoriesData?.categories || [],
+    data: slidersData?.sliders || [],
     enableRowActions: true,
     positionActionsColumn: "last",
+
     renderTopToolbarCustomActions: () => (
       <button
         onClick={() => navigate("/dashboard/add-slider")}
@@ -80,25 +105,29 @@ const ShowSliders: React.FC = () => {
         + Add New Slider
       </button>
     ),
+
     renderRowActionMenuItems: ({ row }) => [
       <MenuItem
         key="edit"
-        onClick={() => navigate(`/dashboard/edit-category/${row.original._id}`)}
+        onClick={() => navigate(`/dashboard/edit-slider/${row.original._id}`)}
       >
         Edit
       </MenuItem>,
-      <MenuItem key="delete" onClick={() => handleDeleteConfirmation(row.original._id)}>
+
+      <MenuItem
+        key="delete"
+        onClick={() => handleDeleteConfirmation(row.original._id)}
+      >
         Delete
       </MenuItem>,
     ],
   });
 
-  // Return loading/error AFTER hooks are defined
-  if (isLoading) return <p>Loading categories...</p>;
-  if (isError) return <p>Error fetching categories.</p>;
+  // LOADING / ERROR
+  if (isLoading) return <p>Loading sliders...</p>;
+  if (isError) return <p>Error fetching sliders.</p>;
 
   return <MaterialReactTable table={table} />;
 };
 
 export default ShowSliders;
-
