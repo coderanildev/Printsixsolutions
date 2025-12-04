@@ -88,22 +88,32 @@ router.get("/my-orders", checkAuth, async (req, res) => {
 // // ------------------------------------------------------
 // // 📌 4. GET ORDER BY ID
 // // ------------------------------------------------------
-// router.get("/:id", async (req, res) => {
-//   try {
-//     const order = await Order.findById(req.params.id);
+router.get("/my-order/:id", async (req, res) => {
+  try {
+    const orderId = req.params.id;
 
-//     if (!order) {
-//       return res.status(404).json({
-//         success: false,
-//         message: "Order not found",
-//       });
-//     }
+    // Find order by ID
+    const order = await Order.findById(orderId);
 
-//     res.status(200).json({ success: true, order });
-//   } catch (err) {
-//     res.status(500).json({ success: false, error: err.message });
-//   }
-// });
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      order,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+});
+
 
 
 // // ------------------------------------------------------
@@ -136,23 +146,23 @@ router.get("/my-orders", checkAuth, async (req, res) => {
 // // ------------------------------------------------------
 // // 📌 6. DELETE ORDER (optional)
 // // ------------------------------------------------------
-// router.delete("/:id", async (req, res) => {
-//   try {
-//     const deletedOrder = await Order.findByIdAndDelete(req.params.id);
+router.delete("/:id", async (req, res) => {
+  try {
+    const deletedOrder = await Order.findByIdAndDelete(req.params.id);
 
-//     if (!deletedOrder) {
-//       return res.status(404).json({
-//         success: false,
-//         message: "Order not found",
-//       });
-//     }
+    if (!deletedOrder) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found",
+      });
+    }
 
-//     res
-//       .status(200)
-//       .json({ success: true, message: "Order deleted successfully" });
-//   } catch (err) {
-//     res.status(500).json({ success: false, error: err.message });
-//   }
-// });
+    res
+      .status(200)
+      .json({ success: true, message: "Order deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
 
 module.exports = router;

@@ -24,6 +24,8 @@ const DashboardSidebar: React.FC = () => {
     { text: "Products", icon: <ArticleIcon />, path: "/dashboard/products" },
     { text: "Customers", icon: <WorkIcon />, path: "/dashboard/customers" },
     { text: "Gallery Images", icon: <ImageIcon />, path: "/dashboard/galleries" },
+    { text: "Orders", icon: <ImageIcon />, path: "/dashboard/admin-orders" },
+
   ];
 
   return (

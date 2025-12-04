@@ -23,9 +23,33 @@ export const orderApi = apiSlice.injectEndpoints({
     providesTags: ["Order"],
     }),
 
+    getOrderDetails: builder.query({
+      query: (id) => `/order/my-order/${id}`,
+    }),
 
+    getAllOrders: builder.query({
+      query: () => "/order",
+      providesTags: ["Order"],
+
+    }),
+
+
+    deleteOrder: builder.mutation({
+      query: (id) => ({
+        url: `/order/${id}`,
+        method: "DELETE",
+      }),
+
+      invalidatesTags: ["Order"],
+    }),
 
   }),
 });
 
-export const { useCreateOrderMutation, useGetMyOrdersQuery  } = orderApi;
+export const { 
+  useCreateOrderMutation,
+  useGetMyOrdersQuery,
+  useGetOrderDetailsQuery,
+  useGetAllOrdersQuery,
+  useDeleteOrderMutation 
+ } = orderApi;

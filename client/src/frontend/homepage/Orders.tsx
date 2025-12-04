@@ -69,7 +69,7 @@ const UserProfile = () => {
                     <TableCell sx={{ color: "white" }}>₹{order.totalAmount}</TableCell>
                     <TableCell>
                         <button
-                          onClick={() => navigate(`/order/${order._id}`)}
+                           onClick={() => navigate(`/Customer/Orders/${order._id}`)}
                           style={{
                             padding: "6px 12px",
                             background: "#fc9b04",

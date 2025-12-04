@@ -29,12 +29,14 @@ import Orders from "../frontend/homepage/Orders";
 import Address from "../frontend/homepage/Address";
 import Changepassword from "../frontend/homepage/Changepassword";
 import UserProfile from "../frontend/homepage/UserProfile"
+import CustomerOrderDetails from "../frontend/homepage/CustomerOrderDetails";
 
 import ShowSliders from "../frontend/dashboard/showsliders";
 import AddSlider from "../frontend/dashboard/showsliders/AddSlider";
 import EditSlider from "../frontend/dashboard/showsliders/EditSlider";
 
-// import EditSlider from "../frontend/dashboard/categories/EditCategory"
+import AdminOrders from "../frontend/dashboard/orders/index";
+
 
 
 
@@ -75,6 +77,10 @@ const frontendRoutes = createBrowserRouter([
           {
            path:"Changepassword",
            element:<Changepassword/>
+          },
+          {
+            path: "Orders/:id",
+            element: <CustomerOrderDetails />
           }
         ]
       },
@@ -212,9 +218,9 @@ const frontendRoutes = createBrowserRouter([
         element: <EditSlider/>
       },
       {
-        path:"order/:id",
-        element: <OrderDetails />
-      }
+        path: "admin-orders",
+        element: <AdminOrders />,
+      },
     ],
   },
 ]);
