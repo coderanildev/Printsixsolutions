@@ -22,6 +22,7 @@ import {
   Typography,
   CardActions,
   hasImage,
+  ListItemButton,
 } from "@mui/material";
 import {
   Menu as MenuIcon,
@@ -38,12 +39,9 @@ import "./Homepage.css";
 import defaultUserImg from "../../assets/img/icon/userImage.jpg";
 import { useGetAllCategoriesQuery } from "../../redux/services/categories";
 
-
 export default function Navbar() {
   const {
     data: categoriesData,
-    isLoading,
-    isError,
   } = useGetAllCategoriesQuery();
 
   const categories = categoriesData?.categories || [];
@@ -421,7 +419,7 @@ export default function Navbar() {
         ModalProps={{ keepMounted: true }}
       >
         <List>
-          <ListItem button component={Link} to="/">
+          {/* <ListItem button component={Link} to="/">
             <ListItemText primary="Home" />
           </ListItem>
           <ListItem button component={Link} to="/shop">
@@ -432,7 +430,31 @@ export default function Navbar() {
           </ListItem>
           <ListItem button component={Link} to="/contact">
             <ListItemText primary="Contact" />
+          </ListItem> */}
+          <ListItem disablePadding>
+            <ListItemButton component={Link} to="/">
+              <ListItemText primary="Home" />
+            </ListItemButton>
           </ListItem>
+
+          <ListItem disablePadding>
+            <ListItemButton component={Link} to="/shop">
+              <ListItemText primary="Shop" />
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding>
+            <ListItemButton component={Link} to="/about">
+              <ListItemText primary="About" />
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding>
+            <ListItemButton component={Link} to="/contact">
+              <ListItemText primary="Contact" />
+            </ListItemButton>
+          </ListItem>
+
         </List>
       </Drawer>
     </div>

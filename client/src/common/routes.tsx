@@ -210,6 +210,10 @@ const frontendRoutes = createBrowserRouter([
       {
         path:"edit-slider/:id",
         element: <EditSlider/>
+      },
+      {
+        path:"order/:id",
+        element: <OrderDetails />
       }
     ],
   },

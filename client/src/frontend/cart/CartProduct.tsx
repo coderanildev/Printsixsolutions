@@ -24,7 +24,7 @@ interface Props {
 }
 
 const CartProduct: React.FC<Props> = ({ cartItem }) => {
-  console.log('cartItem', cartItem);
+  // console.log('cartItem', cartItem);
   
   const dispatch = useDispatch();
   const [deleteCartItem] = useDeleteCartItemMutation();

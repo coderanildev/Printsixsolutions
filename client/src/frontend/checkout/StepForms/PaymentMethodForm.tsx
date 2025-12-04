@@ -9,24 +9,48 @@ import {
   Paper,
   Grid,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+
 import {
   setCurrentStep,
   updateCheckoutFormData,
 } from "../../../redux/reducer/checkout";
+
 import NavButtons from "../NavButtons";
+import { RootState } from "../../../redux/Store";
+
+import { useCreateOrderMutation } from "../../../redux/services/order";
+import { toast } from "react-toastify";
+
+import { useCartItems } from "../../../hooks/useCartItems";
 
 export default function PaymentMethodForm() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const currentStep = useSelector((store) => store.checkout.currentStep);
-  const existingFormData = useSelector(
-    (store) => store.checkout.checkoutFormData
+
+  // 🟢 NOW VALID — Hooks inside component
+  const currentStep = useSelector(
+    (store: RootState) => store.checkout.currentStep
   );
+
+  const existingFormData = useSelector(
+    (store: RootState) => store.checkout.checkoutFormData
+  );
+
+  const user = useSelector((state: RootState) => state.auth);
+  const isAuthenticated = !!user?.userId;
+
+  // 🟢 cartItems now works without throwing useContext error
+  const { cartItems } = useCartItems(isAuthenticated);
+  console.log("cartItems payment mode page", cartItems);
+
+  const [createOrder] = useCreateOrderMutation();
 
   const {
     register,
@@ -39,20 +63,61 @@ export default function PaymentMethodForm() {
   const initialPaymentMethod = existingFormData.paymentMethod || "";
   const [paymentMethod, setPaymentMethod] = useState(initialPaymentMethod);
 
-  const processData = (data) => {
+  const processData = async (data: any) => {
     data.paymentMethod = paymentMethod;
     dispatch(updateCheckoutFormData(data));
-    dispatch(setCurrentStep(currentStep + 1));
+
+    // Calculate totals
+  const subTotal = cartItems.reduce(
+    (total, item) => total + item.salePrice * item.quantity,
+    0
+  );
+
+  const totalAmount = subTotal + existingFormData.shippingCost;
+
+  // FINAL ORDER PAYLOAD (NO ERROR)
+  const orderPayload = {
+    userId: user?.userId,
+    billingAddress: existingFormData.billingAddress,
+    shippingAddress: existingFormData.shippingAddress,
+
+    items: cartItems.map((item) => ({
+      productId: item.productId,
+      name: item.name,
+      quantity: item.quantity,
+      price: item.salePrice,
+      imageUrl: item.imageUrl,
+    })),
+
+    subTotal,
+    shippingCost: existingFormData.shippingCost,
+    totalAmount,
+
+    paymentMethod: paymentMethod,
+  };
+
+  console.log("FINAL ORDER PAYLOAD", orderPayload);
+
+    try {
+      const res = await createOrder(orderPayload).unwrap();
+      toast.success("Order placed successfully!");
+      navigate("/customer/orders");
+
+      dispatch(setCurrentStep(currentStep + 1));
+    } catch (error: any) {
+      toast.error("Failed to place order");
+      console.error("Order error:", error);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit(processData)}>
-      <Typography sx={{color:"white"}} variant="h5" gutterBottom>
+      <Typography sx={{ color: "white" }} variant="h5" gutterBottom>
         Payment Method
       </Typography>
 
       <FormControl component="fieldset" fullWidth className="mb-4">
-        <FormLabel component="legend" sx={{color:"white"}}>
+        <FormLabel component="legend" sx={{ color: "white" }}>
           Which payment method do you prefer?
         </FormLabel>
 
@@ -61,6 +126,7 @@ export default function PaymentMethodForm() {
           onChange={(e) => setPaymentMethod(e.target.value)}
         >
           <Grid container spacing={2}>
+            {/* COD option */}
             <Grid item xs={12} md={6}>
               <Paper
                 elevation={3}
@@ -95,6 +161,7 @@ export default function PaymentMethodForm() {
               </Paper>
             </Grid>
 
+            {/* Credit Card option */}
             <Grid item xs={12} md={6}>
               <Paper
                 elevation={3}
