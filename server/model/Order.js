@@ -67,7 +67,7 @@ const OrderSchema = new mongoose.Schema(
     orderStatus: {
       type: String,
       enum: ["PLACED", "PROCESSING", "SHIPPED", "DELIVERED", "CANCELLED"],
-      default: "PLACED",
+      default: "PROCESSING",
     },
 
     paypal: {

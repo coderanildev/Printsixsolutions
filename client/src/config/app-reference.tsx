@@ -14,4 +14,5 @@ export const ApiRouteService = {
   country: "country",
   state: "state",
   order: "/order",
+  payments: "/payments",
 };

@@ -215,13 +215,12 @@ const frontendRoutes = createBrowserRouter([
       },
       {
         path:"edit-slider/:id",
-        element: <EditSlider/>
+        element: <EditSlider/>,
       },
       {
         path: "admin-orders",
         element: <AdminOrders />,
       },
-      ,
       {
         path: "order-details/:id",
         element: <AdminOrderView />

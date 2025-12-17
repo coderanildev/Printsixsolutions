@@ -111,23 +111,18 @@ export default function PaymentMethodForm() {
 
     const orderRes = await createOrder(orderPayload).unwrap();
 
-   
+    // If COD, finish flow
     if (paymentMethod === "Cash On Delivery") {
       toast.success("Order placed successfully!");
       navigate("/customer/orders");
       return;
     }
 
-    if (paymentMethod === "Cash On Delivery") {
-      toast.success("Order placed successfully!");
-      navigate("/customer/orders");
-      return;
-    }
-
-    
+    // For PayPal, use the created order's ID when requesting PayPal approval
     if (paymentMethod === "PayPal") {
+        const orderIdToUse = orderRes?.order?._id || orderRes?.order?.id;
         const paypalRes = await createPaypalPayment({
-          orderId: orderId,
+          orderId: orderIdToUse,
           totalAmount: orderPayload.totalAmount,
         }).unwrap();
 

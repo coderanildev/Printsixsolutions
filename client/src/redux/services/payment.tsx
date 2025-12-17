@@ -1,11 +1,11 @@
+import { ApiRouteService } from "../../config/app-reference";
 import { apiSlice } from "../interceptor/apiSlice";
 
-export const paymentApi  = apiSlice.injectEndpoints({
+export const paymentApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-
-           createPaypalPayment: builder.mutation({
+    createPaypalPayment: builder.mutation({
       query: (data) => ({
-        url: "/payments/paypal/create",
+        url: `${ApiRouteService.payments}/paypal/create`,
         method: "POST",
         body: data,
       }),
@@ -14,4 +14,3 @@ export const paymentApi  = apiSlice.injectEndpoints({
 });
 
 export const { useCreatePaypalPaymentMutation } = paymentApi;
-

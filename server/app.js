@@ -47,7 +47,7 @@ app.use("/country", countryRoute);
 app.use("/state", stateRoute);
 app.use("/slider", sliderRoute);
 app.use("/order", orderRoute);
-app.use("/paypal", paypalRoutes);
+app.use("/payments", paypalRoutes);
 
 
 
