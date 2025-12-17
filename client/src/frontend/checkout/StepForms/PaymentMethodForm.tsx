@@ -29,6 +29,8 @@ import { useCreateOrderMutation } from "../../../redux/services/order";
 import { toast } from "react-toastify";
 
 import { useCartItems } from "../../../hooks/useCartItems";
+import { useCreatePaypalPaymentMutation } from "../../../redux/services/payment";
+
 
 export default function PaymentMethodForm() {
   const navigate = useNavigate();
@@ -38,6 +40,7 @@ export default function PaymentMethodForm() {
   const currentStep = useSelector(
     (store: RootState) => store.checkout.currentStep
   );
+ const [createPaypalPayment] = useCreatePaypalPaymentMutation();
 
   const existingFormData = useSelector(
     (store: RootState) => store.checkout.checkoutFormData
@@ -64,6 +67,12 @@ export default function PaymentMethodForm() {
   const [paymentMethod, setPaymentMethod] = useState(initialPaymentMethod);
 
   const processData = async (data: any) => {
+
+    if (!paymentMethod) {
+      toast.error("Please select a payment method");
+      return;
+    }
+
     data.paymentMethod = paymentMethod;
     dispatch(updateCheckoutFormData(data));
 
@@ -99,11 +108,39 @@ export default function PaymentMethodForm() {
   console.log("FINAL ORDER PAYLOAD", orderPayload);
 
     try {
-      const res = await createOrder(orderPayload).unwrap();
+
+    const orderRes = await createOrder(orderPayload).unwrap();
+
+   
+    if (paymentMethod === "Cash On Delivery") {
       toast.success("Order placed successfully!");
       navigate("/customer/orders");
+      return;
+    }
 
-      dispatch(setCurrentStep(currentStep + 1));
+    if (paymentMethod === "Cash On Delivery") {
+      toast.success("Order placed successfully!");
+      navigate("/customer/orders");
+      return;
+    }
+
+    
+    if (paymentMethod === "PayPal") {
+        const paypalRes = await createPaypalPayment({
+          orderId: orderId,
+          totalAmount: orderPayload.totalAmount,
+        }).unwrap();
+
+        window.location.href = paypalRes.approvalUrl;
+
+      }
+
+    
+      // const res = await createOrder(orderPayload).unwrap();
+      // toast.success("Order placed successfully!");
+      // navigate("/customer/orders");
+
+      // dispatch(setCurrentStep(currentStep + 1));
     } catch (error: any) {
       toast.error("Failed to place order");
       console.error("Order error:", error);
@@ -189,6 +226,41 @@ export default function PaymentMethodForm() {
                     >
                       <CreditCardIcon color="action" />
                       <Typography>Credit Card</Typography>
+                    </div>
+                  }
+                />
+                <CircleOutlinedIcon />
+              </Paper>
+            </Grid>
+
+            {/* Credit Card option */}
+            <Grid item xs={12} md={6}>
+              <Paper
+                elevation={3}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  padding: "1px 8px",
+                  border:
+                    paymentMethod === "PayPal"
+                      ? "2px solid #1976d2"
+                      : "1px solid #ccc",
+                  backgroundColor:
+                    paymentMethod === "PayPal" ? "#e3f2fd" : "#fff",
+                }}
+              >
+                <FormControlLabel
+                  value="PayPal"
+                  control={
+                    <Radio {...register("paymentMethod", { required: true })} />
+                  }
+                  label={
+                    <div
+                      style={{ display: "flex", alignItems: "center", gap: 10 }}
+                    >
+                      <CreditCardIcon color="action" />
+                      <Typography>PayPal</Typography>
                     </div>
                   }
                 />

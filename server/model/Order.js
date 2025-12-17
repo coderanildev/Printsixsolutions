@@ -58,10 +58,22 @@ const OrderSchema = new mongoose.Schema(
       default: "PENDING",
     },
 
+    paymentMethodsDetails: {
+        type: String,
+        enum: ["COD", "card", "paypal", "stripe"],
+        default: "COD",
+    },
+
     orderStatus: {
       type: String,
       enum: ["PLACED", "PROCESSING", "SHIPPED", "DELIVERED", "CANCELLED"],
       default: "PLACED",
+    },
+
+    paypal: {
+      orderId: String,
+      payerId: String,
+      paymentId: String,
     },
   },
   { timestamps: true }

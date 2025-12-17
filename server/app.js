@@ -32,6 +32,7 @@ const countryRoute = require("./routes/country");
 const stateRoute = require("./routes/state");
 const sliderRoute = require("./routes/slider");
 const orderRoute = require("./routes/orders");
+const paypalRoutes = require("./routes/paymentpaypal");
 
 
 app.use(express.json());
@@ -46,6 +47,8 @@ app.use("/country", countryRoute);
 app.use("/state", stateRoute);
 app.use("/slider", sliderRoute);
 app.use("/order", orderRoute);
+app.use("/paypal", paypalRoutes);
+
 
 
 app.use("*", (req, res) => {

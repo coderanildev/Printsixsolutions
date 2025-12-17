@@ -36,7 +36,7 @@ import AddSlider from "../frontend/dashboard/showsliders/AddSlider";
 import EditSlider from "../frontend/dashboard/showsliders/EditSlider";
 
 import AdminOrders from "../frontend/dashboard/orders/index";
-
+import AdminOrderView from "../frontend/dashboard/orders/ViewOrder";
 
 
 
@@ -221,6 +221,11 @@ const frontendRoutes = createBrowserRouter([
         path: "admin-orders",
         element: <AdminOrders />,
       },
+      ,
+      {
+        path: "order-details/:id",
+        element: <AdminOrderView />
+      }
     ],
   },
 ]);
