@@ -62,7 +62,7 @@ router.post("/paypal/create", async (req, res) => {
           ],
           application_context: {
             return_url: "http://localhost:3000/payments/paypal/capture",
-            cancel_url: "http://localhost:5173/paypal-cancel",
+            cancel_url: "http://localhost:3000/payments/paypal/cancel",
           },
         }),
       }
@@ -114,11 +114,13 @@ router.get("/paypal/capture", async (req, res) => {
     );
 
     const data = await response.json();
+    console.log("PAYPAL CAPTURE RESPONSE:", data);
 
     const order = await Order.findOne({ "paypal.orderId": token });
 
     if (!order) {
-      return res.redirect("http://localhost:5173/paypal-cancel");
+      console.error("Order not found for token:", token);
+      return res.redirect("http://localhost:5173/checkout/paypal-cancel?reason=Order%20not%20found");
     }
 
     order.paymentStatus = "PAID";
@@ -127,10 +129,33 @@ router.get("/paypal/capture", async (req, res) => {
 
     await order.save();
 
-    return res.redirect("http://localhost:5173/customer/orders");
+    // Redirect to success page with order ID and token
+    return res.redirect(
+      `http://localhost:5173/checkout/paypal-success?orderId=${order._id}&token=${token}`
+    );
   } catch (error) {
     console.error("PAYPAL CAPTURE ERROR:", error);
-    return res.redirect("http://localhost:5173/paypal-cancel");
+    return res.redirect(
+      "http://localhost:5173/checkout/paypal-cancel?reason=Payment%20capture%20failed&token=" + req.query.token
+    );
+  }
+});
+
+// ------------------------------------
+// 📌 PAYPAL CANCEL
+// ------------------------------------
+router.get("/paypal/cancel", async (req, res) => {
+  try {
+    const { token } = req.query;
+    console.log("User cancelled PayPal payment with token:", token);
+
+    // Redirect to cancel page with token
+    return res.redirect(
+      `http://localhost:5173/checkout/paypal-cancel?token=${token}&reason=Payment%20cancelled%20by%20user`
+    );
+  } catch (error) {
+    console.error("PAYPAL CANCEL ERROR:", error);
+    return res.redirect("http://localhost:5173/checkout/paypal-cancel?reason=Error%20processing%20cancellation");
   }
 });
 

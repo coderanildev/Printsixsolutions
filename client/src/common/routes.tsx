@@ -37,6 +37,8 @@ import EditSlider from "../frontend/dashboard/showsliders/EditSlider";
 
 import AdminOrders from "../frontend/dashboard/orders/index";
 import AdminOrderView from "../frontend/dashboard/orders/ViewOrder";
+import PaymentSuccess from "../frontend/checkout/PaymentSuccess";
+import PaymentCancel from "../frontend/checkout/PaymentCancel";
 
 
 
@@ -157,6 +159,14 @@ const frontendRoutes = createBrowserRouter([
           </ProtectedRoutes>
         ),
         index: true,
+      },
+      {
+        path: "paypal-success",
+        element: <PaymentSuccess />,
+      },
+      {
+        path: "paypal-cancel",
+        element: <PaymentCancel />,
       },
     ],
   },

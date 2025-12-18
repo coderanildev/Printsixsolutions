@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   FormControl,
   FormLabel,
@@ -18,7 +18,6 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
-  setCurrentStep,
   updateCheckoutFormData,
 } from "../../../redux/reducer/checkout";
 
@@ -37,9 +36,9 @@ export default function PaymentMethodForm() {
   const dispatch = useDispatch();
 
   // 🟢 NOW VALID — Hooks inside component
-  const currentStep = useSelector(
-    (store: RootState) => store.checkout.currentStep
-  );
+  // const currentStep = useSelector(
+  //   (store: RootState) => store.checkout.currentStep
+  // );
  const [createPaypalPayment] = useCreatePaypalPaymentMutation();
 
   const existingFormData = useSelector(
@@ -58,7 +57,7 @@ export default function PaymentMethodForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors,isLoading },
   } = useForm({
     defaultValues: { ...existingFormData },
   });
@@ -272,7 +271,7 @@ export default function PaymentMethodForm() {
         )}
       </FormControl>
 
-      <NavButtons />
+      <NavButtons loading={isLoading} />
     </form>
   );
 }
