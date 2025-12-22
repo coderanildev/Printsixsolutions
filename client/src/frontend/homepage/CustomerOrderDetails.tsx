@@ -1,142 +1,210 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { useGetOrderDetailsQuery } from "../../redux/services/order";
 import {
-  Typography,
-  Box,
+  Container,
   Card,
   CardContent,
-  Divider,
-  Grid
+  Typography,
+  Grid,
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
 } from "@mui/material";
+import { useGetOrderDetailsQuery } from "../../redux/services/order";
+
+const cardStyle = {
+  backgroundColor: "#0f172a", // blue
+  color: "white",
+  borderRadius: 3,
+};
+
+const headingStyle = {
+  color: "#fb923c", // orange
+  fontWeight: "bold",
+};
 
 const CustomerOrderDetails = () => {
   const { id } = useParams();
-
   const { data, isLoading, isError } = useGetOrderDetailsQuery(id);
 
-  if (isLoading) return <Typography>Loading order...</Typography>;
-  if (isError) return <Typography color="error">Unable to load order.</Typography>;
-
-  const order = data?.order;
-
-  if (!order) {
+  if (isLoading)
     return (
-      <Typography sx={{ textAlign: "center", mt: 4 }}>
-        ❌ No order found with this ID
-      </Typography>
+      <Container sx={{ py: 6 }}>
+        <Typography align="center">Loading order details...</Typography>
+      </Container>
     );
-  }
+
+  if (isError || !data?.order)
+    return (
+      <Container sx={{ py: 6 }}>
+        <Typography align="center" color="error">
+          Failed to load order details
+        </Typography>
+      </Container>
+    );
+
+  const order = data.order;
 
   return (
-    <Box sx={{ maxWidth: 1200, mx: "auto", mt: 4 }}>
-      <Card sx={{ background: "#1f2937", color: "white", borderRadius: 3 }}>
+    <Container maxWidth="lg" sx={{ py: 6 }}>
+      {/* ================= ORDER ITEMS ================= */}
+      <Card sx={{ ...cardStyle, mb: 4 }}>
         <CardContent>
-          {/* HEADER */}
-          <Typography variant="h5" sx={{ mb: 1, color: "#fc9b04" }}>
-            Order Details
+          <Typography variant="h6" sx={{ ...headingStyle, mb: 2 }}>
+            Order Items
           </Typography>
 
-          <Typography>Order ID: {order._id}</Typography>
-          <Typography>Date: {new Date(order.createdAt).toLocaleString()}</Typography>
-          <Typography>Status: {order.orderStatus}</Typography>
-          <Typography>Payment: {order.paymentStatus}</Typography>
-          <Typography>Payment Method: {order.paymentMethod}</Typography>
+          <TableContainer component={Paper} sx={{ background: "transparent" }}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell sx={{ color: "#fb923c" }}>Product</TableCell>
+                  <TableCell sx={{ color: "#fb923c" }} align="center">
+                    Qty
+                  </TableCell>
+                  <TableCell sx={{ color: "#fb923c" }} align="right">
+                    Price
+                  </TableCell>
+                  <TableCell sx={{ color: "#fb923c" }} align="right">
+                    Total
+                  </TableCell>
+                </TableRow>
+              </TableHead>
 
-          <Divider sx={{ my: 3, borderColor: "#444" }} />
-
-          {/* ORDER TOTALS */}
-          <Box sx={{ mb: 2 }}>
-            <Typography>Subtotal: ₹{order.subTotal}</Typography>
-            <Typography>Shipping Cost: ₹{order.shippingCost}</Typography>
-
-            <Typography variant="h6" sx={{ color: "#fc9b04", mt: 1 }}>
-              Total Amount: ₹{order.totalAmount}
-            </Typography>
-          </Box>
-
-          <Divider sx={{ my: 3, borderColor: "#444" }} />
-
-          {/* ITEMS LIST */}
-          <Typography variant="h6" sx={{ color: "#fc9b04" }}>
-            Items
-          </Typography>
-
-          {order.items?.map((item, index) => (
-            <Grid
-              container
-              key={index}
-              spacing={2}
-              sx={{
-                mt: 2,
-                p: 1,
-                borderBottom: "1px solid #333",
-                alignItems: "center"
-              }}
-            >
-              <Grid item xs={2}>
-                <img
-                  src={item.imageUrl}
-                  alt={item.name}
-                  style={{
-                    width: "100%",
-                    borderRadius: 8
-                  }}
-                />
-              </Grid>
-
-              <Grid item xs={10}>
-                <Typography variant="subtitle1">{item.name}</Typography>
-                <Typography>Price: ₹{item.price}</Typography>
-                <Typography>Qty: {item.quantity}</Typography>
-              </Grid>
-            </Grid>
-          ))}
-
-          <Divider sx={{ my: 3, borderColor: "#444" }} />
-
-          {/* BILLING ADDRESS */}
-          <Typography variant="h6" sx={{ color: "#fc9b04" }}>
-            Billing Address
-          </Typography>
-
-          <Box sx={{ mt: 1 }}>
-            <Typography>{order.billingAddress.fullName}</Typography>
-            <Typography>{order.billingAddress.address1}</Typography>
-            {order.billingAddress.address2 && (
-              <Typography>{order.billingAddress.address2}</Typography>
-            )}
-            <Typography>
-              {order.billingAddress.city}, {order.billingAddress.state} -{" "}
-              {order.billingAddress.postalCode}
-            </Typography>
-            <Typography>{order.billingAddress.country}</Typography>
-            <Typography>Phone: {order.billingAddress.phone}</Typography>
-          </Box>
-
-          <Divider sx={{ my: 3, borderColor: "#444" }} />
-
-          {/* SHIPPING ADDRESS */}
-          <Typography variant="h6" sx={{ color: "#fc9b04" }}>
-            Shipping Address
-          </Typography>
-
-          <Box sx={{ mt: 1 }}>
-            <Typography>{order.shippingAddress.fullName}</Typography>
-            <Typography>{order.shippingAddress.address1}</Typography>
-            {order.shippingAddress.address2 && (
-              <Typography>{order.shippingAddress.address2}</Typography>
-            )}
-            <Typography>
-              {order.shippingAddress.city}, {order.shippingAddress.state} -{" "}
-              {order.shippingAddress.postalCode}
-            </Typography>
-            <Typography>{order.shippingAddress.country}</Typography>
-            <Typography>Phone: {order.shippingAddress.phone}</Typography>
-          </Box>
+              <TableBody>
+                {order.items.map((item) => (
+                  <TableRow key={item._id}>
+                    <TableCell sx={{ color: "white" }}>
+                      <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                        <img
+                          src={item.imageUrl}
+                          alt={item.name}
+                          width={60}
+                          style={{ borderRadius: 6 }}
+                        />
+                        {item.name}
+                      </Box>
+                    </TableCell>
+                    <TableCell sx={{ color: "white" }} align="center">
+                      {item.quantity}
+                    </TableCell>
+                    <TableCell sx={{ color: "white" }} align="right">
+                      ₹{item.price}
+                    </TableCell>
+                    <TableCell sx={{ color: "white" }} align="right">
+                      ₹{item.price * item.quantity}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </CardContent>
       </Card>
-    </Box>
+
+      {/* ================= ORDER + CUSTOMER INFO ================= */}
+      <Grid container spacing={3} sx={{ mb: 4 }}>
+        {/* Order Info */}
+        <Grid item xs={12} md={6}>
+          <Card sx={cardStyle}>
+            <CardContent>
+              <Typography variant="h6" sx={{ ...headingStyle, mb: 2 }}>
+                Order Information
+              </Typography>
+
+              <Typography>Order ID: {order._id}</Typography>
+              <Typography>Order Status: {order.orderStatus}</Typography>
+              <Typography>Payment Status: {order.paymentStatus}</Typography>
+              <Typography>Payment Method: {order.paymentMethod}</Typography>
+              <Typography>Total Amount: ₹{order.totalAmount}</Typography>
+              <Typography>
+                Order Date: {new Date(order.createdAt).toLocaleString()}
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* Customer Info */}
+        <Grid item xs={12} md={6}>
+          <Card sx={cardStyle}>
+            <CardContent>
+              <Typography variant="h6" sx={{ ...headingStyle, mb: 2 }}>
+                Customer Information
+              </Typography>
+
+              <Typography>Name: {order.userId?.name}</Typography>
+              <Typography>Email: {order.userId?.email}</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+
+      {/* ================= SHIPPING + BILLING ================= */}
+      <Grid container spacing={3}>
+        {/* Shipping */}
+        <Grid item xs={12} md={6}>
+          <Card sx={cardStyle}>
+            <CardContent>
+              <Typography variant="h6" sx={headingStyle}>
+                Shipping Address
+              </Typography>
+
+              <Typography>{order.shippingAddress?.fullName}</Typography>
+              <Typography>{order.shippingAddress?.address1}</Typography>
+              <Typography>
+                {order.shippingAddress?.city},{" "}
+                {order.shippingAddress?.state}{" "}
+                {order.shippingAddress?.postalCode}
+              </Typography>
+              <Typography>{order.shippingAddress?.country}</Typography>
+              <Typography>Phone: {order.shippingAddress?.phone}</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* Billing */}
+        <Grid item xs={12} md={6}>
+          <Card sx={cardStyle}>
+            <CardContent>
+              <Typography variant="h6" sx={headingStyle}>
+                Billing Address
+              </Typography>
+
+              <Typography>
+                {order.billingAddress?.fullName ||
+                  order.shippingAddress?.fullName}
+              </Typography>
+              <Typography>
+                {order.billingAddress?.address1 ||
+                  order.shippingAddress?.address1}
+              </Typography>
+              <Typography>
+                {order.billingAddress?.city ||
+                  order.shippingAddress?.city},{" "}
+                {order.billingAddress?.state ||
+                  order.shippingAddress?.state}{" "}
+                {order.billingAddress?.postalCode ||
+                  order.shippingAddress?.postalCode}
+              </Typography>
+              <Typography>
+                {order.billingAddress?.country ||
+                  order.shippingAddress?.country}
+              </Typography>
+              <Typography>
+                Phone:{" "}
+                {order.billingAddress?.phone ||
+                  order.shippingAddress?.phone}
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+    </Container>
   );
 };
 
